@@ -10,8 +10,56 @@
         <!-- Favicon -->
         <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
 
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600|poppins:600,700,800&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <style>
+            /* =============================================
+               SIAP - Typography & Design System
+               ============================================= */
+            :root {
+                --font-main: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+            }
+            body, html {
+                font-family: var(--font-main) !important;
+                font-size: 14px;
+                line-height: 1.6;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+            /* Headings */
+            h1, h2, h3, h4, h5, h6 {
+                font-family: var(--font-main) !important;
+                font-weight: 600;
+                letter-spacing: -0.01em;
+            }
+            /* Tables standardization */
+            th {
+                font-family: var(--font-main) !important;
+                font-size: 0.7rem;
+                font-weight: 600;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+                color: #6b7280;
+            }
+            td {
+                font-family: var(--font-main) !important;
+                font-size: 0.8rem;
+            }
+            /* Nav/sidebar */
+            nav, aside {
+                font-family: var(--font-main) !important;
+            }
+            /* Buttons */
+            button, a.btn, [role="button"] {
+                font-family: var(--font-main) !important;
+            }
+            /* Form inputs */
+            input, select, textarea {
+                font-family: var(--font-main) !important;
+                font-size: 0.875rem;
+            }
+        </style>
 
         <!-- TomSelect -->
         <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.min.css" rel="stylesheet">

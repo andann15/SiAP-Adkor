@@ -165,11 +165,11 @@
                                             <td class="px-4 py-3 text-sm">{{ $ticket->deleted_at->format('d M Y H:i') }}</td>
                                             <td class="px-4 py-3 text-right">
                                                 <div class="flex justify-end gap-3">
-                                                    <form action="{{ route('restore', $ticket->id) }}" method="POST" onsubmit="return confirm('Kembalikan tiket ini?');">
+                                                    <form action="{{ route('tickets.restore', $ticket->id) }}" method="POST" onsubmit="return confirm('Kembalikan tiket ini?');">
                                                         @csrf
                                                         <button type="submit" class="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline">Restore</button>
                                                     </form>
-                                                    <form action="{{ route('force-delete', $ticket->id) }}" method="POST" onsubmit="return confirm('HAPUS PERMANEN tiket ini? Tindakan ini tidak dapat dibatalkan!');">
+                                                    <form action="{{ route('tickets.force-delete', $ticket->id) }}" method="POST" onsubmit="return confirm('HAPUS PERMANEN tiket ini? Tindakan ini tidak dapat dibatalkan!');">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium hover:underline">Hapus Permanen</button>
