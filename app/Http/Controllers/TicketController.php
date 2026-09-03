@@ -234,8 +234,8 @@ class TicketController extends Controller
 
     public function restore($id): RedirectResponse
     {
-        $this->authorize('delete', Ticket::class); // using delete policy for restore
         $ticket = Ticket::onlyTrashed()->findOrFail($id);
+        $this->authorize('delete', $ticket);
         $ticket->restore();
 
         return back()->with('success', 'Tiket berhasil dikembalikan.');
@@ -243,8 +243,8 @@ class TicketController extends Controller
 
     public function forceDelete($id): RedirectResponse
     {
-        $this->authorize('delete', Ticket::class); // using delete policy for force delete
         $ticket = Ticket::onlyTrashed()->findOrFail($id);
+        $this->authorize('delete', $ticket);
         $ticket->forceDelete();
 
         return back()->with('success', 'Tiket dihapus secara permanen.');
