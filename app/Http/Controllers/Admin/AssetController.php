@@ -168,7 +168,7 @@ class AssetController extends Controller
 
     public function exportCsv()
     {
-        $assets = Asset::with(['category', 'brand', 'location'])->orderBy('name')->get();
+        $assets = Asset::with(['category', 'brand', 'location'])->whereNull('work_unit_id')->orderBy('name')->get();
         return $this->generateCsv($assets, "daftar_aset_" . date('Y-m-d_H-i') . ".csv");
     }
 

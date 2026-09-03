@@ -151,8 +151,7 @@
 
     <div class="mb-4 col-span-2">
         <label for="notes" class="block text-sm font-medium text-gray-700">Rincian / Keterangan Khusus</label>
-        <textarea name="notes" id="notes" rows="4" placeholder="Misal:&#10;1. Laptop = 7&#10;2. Kursi = 8&#10;3. Lemari = 14&#10;Sudah diserahkan ke Yayasan PKT"
-                  class="mt-1 block w-full border-gray-300 rounded-md shadow-[0_8px_30px_rgb(0,0,0,0.04)]">{{ old('notes', $asset->notes ?? '') }}</textarea>
+        <textarea name="notes" id="notes" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-[0_8px_30px_rgb(0,0,0,0.04)]">{{ old('notes', $asset->notes ?? '') }}</textarea>
         <p class="text-xs text-gray-500 mt-1">Gunakan titik koma (;) atau enter untuk memisahkan daftar barang agar rapi.</p>
         @error('notes')
             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
