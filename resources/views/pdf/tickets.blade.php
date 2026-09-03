@@ -15,7 +15,7 @@
 <body>
     <div class="header">
         <h2>Daftar Tiket Kendala</h2>
-        <p>Dicetak pada: {{ now()->format('d/m/Y H:i') }}</p>
+        <p>Dicetak pada: {{ now()->format('d/m/Y') }}</p>
     </div>
 
     <table>

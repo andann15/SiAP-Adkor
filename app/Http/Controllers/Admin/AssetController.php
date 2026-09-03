@@ -216,7 +216,7 @@ class AssetController extends Controller
 
     public function exportPdf()
     {
-        $assets = Asset::with(['category', 'brand', 'location'])->orderBy('name')->get();
+        $assets = Asset::with(['category', 'brand', 'location'])->whereNull('work_unit_id')->orderBy('name')->get();
         $pdf = Pdf::loadView('pdf.assets', [
             'assets' => $assets,
             'statuses' => self::STATUSES
