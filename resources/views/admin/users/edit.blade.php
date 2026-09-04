@@ -21,8 +21,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- NIK -->
                             <div>
-                                <label for="nik" class="block text-sm font-medium text-gray-700 mb-1">NIK</label>
-                                <input id="nik" class="block w-full border-gray-300 focus:border-brand focus:ring-brand rounded-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-gray-50 text-gray-500 @error('nik') border-red-500 @enderror" type="text" name="nik" value="{{ old('nik', $user->nik) }}" required readonly title="NIK tidak bisa diubah begitu saja" />
+                                <label for="nik" class="block text-sm font-medium text-gray-700 mb-1">NIK / NPK</label>
+                                <input id="nik" class="block w-full border-gray-300 focus:border-brand focus:ring-brand rounded-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-gray-50 text-gray-500 @error('nik') border-red-500 @enderror" type="text" name="nik" value="{{ old('nik', $user->nik) }}" required readonly title="NIK / NPK tidak bisa diubah begitu saja" />
                                 <x-input-error :messages="$errors->get('nik')" class="mt-2" />
                             </div>
 

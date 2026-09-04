@@ -37,7 +37,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
-                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari NIK, nama, atau unit kerja..." class="pl-10 rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand w-72">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari NIK/NPK, nama, atau unit kerja..." class="pl-10 rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand w-72">
                         </div>
                         <button type="submit" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors">Cari</button>
                         @if(request('search'))
@@ -74,7 +74,7 @@
                                             </div>
                                             <div class="flex flex-col">
                                                 <span class="font-bold text-slate-900">{{ $user->name }}</span>
-                                                <span class="text-xs text-gray-500 font-mono mt-0.5">NIK: {{ $user->nik ?? '-' }}</span>
+                                                <span class="text-xs text-gray-500 font-mono mt-0.5">NIK / NPK: {{ $user->nik ?? '-' }}</span>
                                             </div>
                                         </div>
                                     </td>

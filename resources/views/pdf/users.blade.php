@@ -22,8 +22,8 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>NIK</th>
-                <th>Nama</th>
+                <th>Nama Lengkap</th>
+                <th>NIK / NPK</th>
                 <th>Email</th>
                 <th>Role</th>
                 <th>Unit Kerja</th>

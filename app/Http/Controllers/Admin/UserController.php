@@ -128,8 +128,8 @@ class UserController extends Controller
         ];
 
         $columns = [
-            'NIK',
-            'Nama',
+            'Nama Lengkap',
+            'NIK / NPK',
             'Email',
             'Role',
             'Unit Kerja'
