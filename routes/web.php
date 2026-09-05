@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\AssetController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\OperatorDashboardController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -170,9 +171,7 @@ Route::middleware(['auth', 'verified', \Spatie\Permission\Middleware\RoleMiddlew
     ->prefix('operator')
     ->name('operator.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return view('operator.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [OperatorDashboardController::class, 'index'])->name('dashboard');
     });
 
 Route::middleware(['auth', 'verified', \Spatie\Permission\Middleware\RoleMiddleware::class . ':user'])
