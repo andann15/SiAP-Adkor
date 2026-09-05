@@ -160,6 +160,10 @@ class TicketController extends Controller
 
         $this->stateMachine->transitionTo($ticket, 'assigned', $request->user(), $validated);
 
+        if ($ticket->assignedOperator) {
+            $ticket->assignedOperator->notify(new \App\Notifications\TicketAssignedNotification($ticket));
+        }
+
         return back()->with('success', 'Tiket disetujui dan ditugaskan ke operator.');
     }
 
