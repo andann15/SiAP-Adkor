@@ -258,7 +258,8 @@ class TicketController extends Controller
     {
         $year = now()->year;
 
-        $lastNumber = Ticket::where('ticket_number', 'like', "TK-{$year}-%")
+        $lastNumber = Ticket::withTrashed()
+            ->where('ticket_number', 'like', "TK-{$year}-%")
             ->orderByDesc('ticket_number')
             ->value('ticket_number');
 
