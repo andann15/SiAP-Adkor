@@ -21,22 +21,22 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="bg-white rounded-xl border-l-4 border-blue-500 shadow-[0_4px_20px_rgb(0,0,0,0.04)] p-4 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                     <p class="text-xs text-gray-500 mb-1">Sedang Aktif</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ \ }}</p>
+                    <p class="text-3xl font-bold text-gray-800">{{ $totalAssigned }}</p>
                     <p class="text-xs text-blue-500 mt-1 font-medium">Tiket perlu ditangani</p>
                 </div>
                 <div class="bg-white rounded-xl border-l-4 border-red-500 shadow-[0_4px_20px_rgb(0,0,0,0.04)] p-4 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                     <p class="text-xs text-gray-500 mb-1">SLA Terlambat</p>
-                    <p class="text-3xl font-bold {{ \ > 0 ? 'text-red-600' : 'text-gray-800' }}">{{ \ }}</p>
+                    <p class="text-3xl font-bold {{ $totalSlaBreached > 0 ? 'text-red-600' : 'text-gray-800' }}">{{ $totalSlaBreached }}</p>
                     <p class="text-xs text-red-500 mt-1 font-medium">Melebihi batas waktu</p>
                 </div>
                 <div class="bg-white rounded-xl border-l-4 border-green-500 shadow-[0_4px_20px_rgb(0,0,0,0.04)] p-4 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                     <p class="text-xs text-gray-500 mb-1">Selesai Dikerjakan</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ \ }}</p>
+                    <p class="text-3xl font-bold text-gray-800">{{ $totalCompleted }}</p>
                     <p class="text-xs text-green-600 mt-1 font-medium">Berhasil diselesaikan</p>
                 </div>
                 <div class="bg-white rounded-xl border-l-4 border-gray-400 shadow-[0_4px_20px_rgb(0,0,0,0.04)] p-4 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                     <p class="text-xs text-gray-500 mb-1">Total Pernah Dikerjakan</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ \ }}</p>
+                    <p class="text-3xl font-bold text-gray-800">{{ $totalAllTime }}</p>
                     <p class="text-xs text-gray-500 mt-1 font-medium">Semua tiket</p>
                 </div>
             </div>
@@ -65,27 +65,27 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            @forelse (\ as \)
-                                <tr class="{{ \->sla_breached ? 'bg-red-50' : 'hover:bg-gray-50' }} transition-colors">
+                            @forelse ($tickets as $ticket)
+                                <tr class="{{ $ticket->sla_breached ? 'bg-red-50' : 'hover:bg-gray-50' }} transition-colors">
                                     <td class="px-4 py-3 text-sm font-mono font-medium text-gray-700">
-                                        TKT-{{ strtoupper(substr(\->id, 0, 8)) }}
-                                        @if(\->sla_breached)
+                                        TKT-{{ strtoupper(substr($ticket->id, 0, 8)) }}
+                                        @if($ticket->sla_breached)
                                             <span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">SLA!</span>
                                         @endif
                                     </td>
-                                    <td class="px-4 py-3 text-sm text-gray-700">{{ \->asset->name ?? '-' }}</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">{{ \->creator->name ?? '-' }}</td>
+                                    <td class="px-4 py-3 text-sm text-gray-700">{{ $ticket->asset->name ?? '-' }}</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">{{ $ticket->creator->name ?? '-' }}</td>
                                     <td class="px-4 py-3">
-                                        <x-ticket-priority-dot :priority="\->priority->name ?? null" />
+                                        <x-ticket-priority-dot :priority="$ticket->priority->name ?? null" />
                                     </td>
                                     <td class="px-4 py-3">
-                                        <x-ticket-status-badge :status="\->status" />
+                                        <x-ticket-status-badge :status="$ticket->status" />
                                     </td>
-                                    <td class="px-4 py-3 text-sm {{ \->sla_breached ? 'text-red-600 font-semibold' : 'text-gray-500' }}">
-                                        {{ \->sla_deadline ? \->sla_deadline->format('d M Y') : '-' }}
+                                    <td class="px-4 py-3 text-sm {{ $ticket->sla_breached ? 'text-red-600 font-semibold' : 'text-gray-500' }}">
+                                        {{ $ticket->sla_deadline ? $ticket->sla_deadline->format('d M Y') : '-' }}
                                     </td>
                                     <td class="px-4 py-3 text-right">
-                                        <a href="{{ route('tickets.show', \) }}" class="inline-flex items-center px-3 py-1.5 bg-gray-800 text-white text-xs font-medium rounded-lg hover:bg-gray-700 transition-colors">
+                                        <a href="{{ route('tickets.show', $ticket) }}" class="inline-flex items-center px-3 py-1.5 bg-gray-800 text-white text-xs font-medium rounded-lg hover:bg-gray-700 transition-colors">
                                             Detail
                                         </a>
                                     </td>
@@ -106,27 +106,27 @@
 
                 {{-- Mobile: Card List --}}
                 <div class="md:hidden divide-y divide-gray-100">
-                    @forelse (\ as \)
-                        <div class="px-4 py-4 {{ \->sla_breached ? 'bg-red-50' : '' }}">
+                    @forelse ($tickets as $ticket)
+                        <div class="px-4 py-4 {{ $ticket->sla_breached ? 'bg-red-50' : '' }}">
                             <div class="flex items-start justify-between gap-3">
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-center gap-2 flex-wrap">
-                                        <span class="font-mono text-xs font-semibold text-gray-600">TKT-{{ strtoupper(substr(\->id, 0, 8)) }}</span>
-                                        @if(\->sla_breached)
+                                        <span class="font-mono text-xs font-semibold text-gray-600">TKT-{{ strtoupper(substr($ticket->id, 0, 8)) }}</span>
+                                        @if($ticket->sla_breached)
                                             <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">SLA!</span>
                                         @endif
-                                        <x-ticket-status-badge :status="\->status" />
+                                        <x-ticket-status-badge :status="$ticket->status" />
                                     </div>
-                                    <p class="mt-1 text-sm font-semibold text-gray-800 truncate">{{ \->asset->name ?? '-' }}</p>
-                                    <p class="text-xs text-gray-500 mt-0.5">Pelapor: {{ \->creator->name ?? '-' }}</p>
+                                    <p class="mt-1 text-sm font-semibold text-gray-800 truncate">{{ $ticket->asset->name ?? '-' }}</p>
+                                    <p class="text-xs text-gray-500 mt-0.5">Pelapor: {{ $ticket->creator->name ?? '-' }}</p>
                                     <div class="flex items-center gap-3 mt-1.5">
-                                        <x-ticket-priority-dot :priority="\->priority->name ?? null" />
-                                        <span class="text-xs {{ \->sla_breached ? 'text-red-600 font-semibold' : 'text-gray-500' }}">
-                                            Deadline: {{ \->sla_deadline ? \->sla_deadline->format('d M Y') : '-' }}
+                                        <x-ticket-priority-dot :priority="$ticket->priority->name ?? null" />
+                                        <span class="text-xs {{ $ticket->sla_breached ? 'text-red-600 font-semibold' : 'text-gray-500' }}">
+                                            Deadline: {{ $ticket->sla_deadline ? $ticket->sla_deadline->format('d M Y') : '-' }}
                                         </span>
                                     </div>
                                 </div>
-                                <a href="{{ route('tickets.show', \) }}" class="flex-shrink-0 inline-flex items-center px-3 py-1.5 bg-gray-800 text-white text-xs font-medium rounded-lg hover:bg-gray-700 transition-colors">
+                                <a href="{{ route('tickets.show', $ticket) }}" class="flex-shrink-0 inline-flex items-center px-3 py-1.5 bg-gray-800 text-white text-xs font-medium rounded-lg hover:bg-gray-700 transition-colors">
                                     Detail
                                 </a>
                             </div>
@@ -138,9 +138,9 @@
                     @endforelse
                 </div>
 
-                @if(\->hasPages())
+                @if($tickets->hasPages())
                     <div class="px-5 py-3 border-t border-gray-100">
-                        {{ \->links() }}
+                        {{ $tickets->links() }}
                     </div>
                 @endif
             </div>
