@@ -47,9 +47,11 @@ class UserDashboardController extends Controller
         $availableAssets = Asset::where('status', 'active')
             ->whereNull('current_user_id')
             ->whereNull('work_unit_id')
+            ->where('code', 'like', 'ADKOR-%')
             ->orderBy('name')
             ->get();
 
         return view('user.dashboard', compact('summary', 'tickets', 'myAssets', 'availableAssets'));
     }
 }
+
