@@ -328,7 +328,7 @@ class TicketController extends Controller
                     $ticket->assignedOperator->name ?? '-',
                     $ticket->priority->name ?? '-',
                     $statusName,
-                    $ticket->created_at->format('d/m/Y H:i')
+                    $ticket->created_at->format('d/m/Y')
                 ];
                 fputcsv($file, $row, ';');
             }

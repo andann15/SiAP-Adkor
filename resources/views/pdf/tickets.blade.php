@@ -41,7 +41,7 @@
                 <td>{{ $ticket->assignedOperator->name ?? '-' }}</td>
                 <td>{{ $ticket->priority->name ?? '-' }}</td>
                 <td>{{ $statusMap[$ticket->status] ?? $ticket->status }}</td>
-                <td>{{ $ticket->created_at->format('d/m/Y H:i') }}</td>
+                <td>{{ $ticket->created_at->format('d/m/Y') }}</td>
             </tr>
             @endforeach
         </tbody>
