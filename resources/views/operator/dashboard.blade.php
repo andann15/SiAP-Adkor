@@ -22,7 +22,7 @@
                 <div class="bg-white rounded-xl border-l-4 border-blue-500 shadow-[0_4px_20px_rgb(0,0,0,0.04)] p-4 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                     <p class="text-xs text-gray-500 mb-1">Sedang Aktif</p>
                     <p class="text-3xl font-bold text-gray-800">{{ $totalAssigned }}</p>
-                    <p class="text-xs text-blue-500 mt-1 font-medium">Tiket perlu ditangani</p>
+                    <p class="text-xs text-blue-500 mt-1 font-medium">Tiket siap dikerjakan</p>
                 </div>
                 <div class="bg-white rounded-xl border-l-4 border-red-500 shadow-[0_4px_20px_rgb(0,0,0,0.04)] p-4 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                     <p class="text-xs text-gray-500 mb-1">SLA Terlambat</p>
@@ -130,7 +130,7 @@
                                     Detail
                                 </a>
                             </div>
-                        </div>
+                        </a>
                     @empty
                         <div class="px-4 py-10 text-center text-sm text-gray-400">
                             Tidak ada tiket aktif yang ditugaskan kepada Anda saat ini.

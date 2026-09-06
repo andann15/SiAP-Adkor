@@ -8,9 +8,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TicketAssignedNotification extends Notification implements ShouldQueue
+class TicketAssignedNotification extends Notification 
 {
-    use Queueable;
+    
 
     public $ticket;
 
@@ -44,3 +44,4 @@ class TicketAssignedNotification extends Notification implements ShouldQueue
         return [];
     }
 }
+
