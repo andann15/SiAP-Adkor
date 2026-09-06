@@ -46,7 +46,7 @@
                                 @php $currentRole = old('role', $user->roles->first()?->name ?? 'user'); @endphp
                                 <select id="role" name="role" class="block w-full border-gray-300 focus:border-brand focus:ring-brand rounded-md shadow-[0_8px_30px_rgb(0,0,0,0.04)]" required>
                                     <option value="user" {{ $currentRole == 'user' ? 'selected' : '' }}>User (Karyawan)</option>
-                                    <option value="operator" {{ $currentRole == 'operator' ? 'selected' : '' }}>Operator IT</option>
+                                    <option value="operator" {{ $currentRole == 'operator' ? 'selected' : '' }}>Operator</option>
                                     <option value="admin" {{ $currentRole == 'admin' ? 'selected' : '' }}>Administrator</option>
                                 </select>
                                 <x-input-error :messages="$errors->get('role')" class="mt-2" />
@@ -102,3 +102,4 @@
         </div>
     </div>
 </x-app-layout>
+

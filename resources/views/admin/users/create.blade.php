@@ -44,7 +44,7 @@
                                 <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Peran (Role)</label>
                                 <select id="role" name="role" class="block w-full border-gray-300 focus:border-brand focus:ring-brand rounded-md shadow-[0_8px_30px_rgb(0,0,0,0.04)]" required>
                                     <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User (Karyawan)</option>
-                                    <option value="operator" {{ old('role') == 'operator' ? 'selected' : '' }}>Operator IT</option>
+                                    <option value="operator" {{ old('role') == 'operator' ? 'selected' : '' }}>Operator</option>
                                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Administrator</option>
                                 </select>
                                 <x-input-error :messages="$errors->get('role')" class="mt-2" />
@@ -93,3 +93,4 @@
         </div>
     </div>
 </x-app-layout>
+

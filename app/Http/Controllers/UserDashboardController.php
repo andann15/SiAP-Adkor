@@ -46,6 +46,7 @@ class UserDashboardController extends Controller
             
         $availableAssets = Asset::where('status', 'active')
             ->whereNull('current_user_id')
+            ->whereNull('work_unit_id')
             ->orderBy('name')
             ->get();
 
