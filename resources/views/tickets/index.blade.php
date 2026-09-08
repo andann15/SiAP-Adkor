@@ -101,7 +101,7 @@
                                     <td class="px-5 py-4">
                                         <div class="flex flex-col">
                                             <span class="font-mono text-sm font-semibold text-brand">{{ $ticket->ticket_number ?? '-' }}</span>
-                                            <span class="text-sm text-gray-900 mt-1">{{ $ticket->asset->name ?? '-' }}</span>
+                                            <span class="text-sm text-gray-900 mt-1">{{ $ticket->asset?->name ?? '-' }}</span>
                                             <span class="text-xs text-gray-400 mt-0.5">{{ $ticket->created_at->format('d M Y H:i') }}</span>
                                         </div>
                                     </td>
@@ -115,7 +115,7 @@
                                         <div class="line-clamp-2 text-xs leading-relaxed text-gray-600">{{ $ticket->description }}</div>
                                     </td>
                                     <td class="px-5 py-4 text-center">
-                                        <span class="text-sm font-medium text-gray-700">{{ $ticket->priority->name ?? '-' }}</span>
+                                        <span class="text-sm font-medium text-gray-700">{{ $ticket->priority?->name ?? '-' }}</span>
                                     </td>
                                     <td class="px-5 py-4 text-center">
                                         <x-ticket-status-badge :status="$ticket->status" />
