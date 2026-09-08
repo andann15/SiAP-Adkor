@@ -44,7 +44,7 @@ class AssetController extends Controller
 
         return view('admin.assets.index', [
             'assets' => $assets,
-            'statuses' => self::STATUSES,
+            'statuses' => WorkUnitAssetStatus::where('is_active', true)->orderBy('order')->orderBy('name')->get(),
         ]);
     }
 
@@ -107,7 +107,7 @@ class AssetController extends Controller
             'purchase_date'    => ['nullable', 'date'],
             'warranty_end'     => ['nullable', 'date', 'after_or_equal:purchase_date'],
             'location_id'      => ['required', 'exists:locations,id'],
-            'status'           => ['required', 'in:' . implode(',', array_keys(self::STATUSES))],
+            'status'           => ['required', 'exists:work_unit_asset_statuses,slug'],
             'current_user_id'  => ['nullable', 'exists:users,id'],
         ]);
     }
@@ -133,7 +133,7 @@ class AssetController extends Controller
             'locations' => Location::where('is_active', true)->orderBy('name')->get(),
             'users' => User::orderBy('name')->get(),
             'workUnits' => WorkUnit::with('department.compartment')->where('is_active', true)->get(),
-            'statuses' => self::STATUSES,
+            'statuses' => WorkUnitAssetStatus::where('is_active', true)->orderBy('order')->orderBy('name')->get(),
         ];
     }
 
@@ -146,7 +146,7 @@ class AssetController extends Controller
 
         return view('admin.assets.trash', [
             'assets' => $assets,
-            'statuses' => self::STATUSES,
+            'statuses' => WorkUnitAssetStatus::where('is_active', true)->orderBy('order')->orderBy('name')->get(),
         ]);
     }
 

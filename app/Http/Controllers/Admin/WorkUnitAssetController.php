@@ -34,10 +34,24 @@ class WorkUnitAssetController extends Controller
             });
         }
 
-        $assets = $query->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
-        $statuses = WorkUnitAssetStatus::all()->keyBy('slug');
+        if ($request->filled('work_unit')) {
+            $query->where('work_unit_id', $request->work_unit);
+        }
 
-        return view('admin.work-unit-assets.index', compact('assets', 'statuses'));
+        if ($request->filled('location')) {
+            $query->where('location_id', $request->location);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $assets   = $query->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
+        $statuses  = WorkUnitAssetStatus::all()->keyBy('slug');
+        $workUnits = \App\Models\WorkUnit::orderBy('name')->get();
+        $locations = Location::orderBy('name')->get();
+
+        return view('admin.work-unit-assets.index', compact('assets', 'statuses', 'workUnits', 'locations'));
     }
 
     public function create(): View
@@ -135,12 +149,23 @@ class WorkUnitAssetController extends Controller
         return $prefix . str_pad($next, 4, '0', STR_PAD_LEFT);
     }
 
-    public function exportCsv()
+    public function exportCsv(Request $request)
     {
-        $assets = Asset::with(['workUnit.department.compartment', 'location'])
-            ->whereNotNull('work_unit_id')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Asset::with(['workUnit.department.compartment', 'location'])
+            ->whereNotNull('work_unit_id');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('code', 'like', "%{$search}%")
+                  ->orWhere('name', 'like', "%{$search}%");
+            });
+        }
+        if ($request->filled('work_unit')) $query->where('work_unit_id', $request->work_unit);
+        if ($request->filled('location'))  $query->where('location_id', $request->location);
+        if ($request->filled('status'))    $query->where('status', $request->status);
+
+        $assets = $query->orderBy('created_at', 'desc')->get();
 
         return $this->generateCsv($assets, "monitoring_aset_unit_kerja_" . date('Y-m-d_H-i') . ".csv");
     }
@@ -218,20 +243,24 @@ class WorkUnitAssetController extends Controller
         return Response::stream($callback, 200, $headers);
     }
 
-    public function exportPdf()
+    public function exportPdf(Request $request)
     {
-        $assets = Asset::with(['workUnit.department.compartment', 'location'])
-            ->whereNotNull('work_unit_id')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Asset::with(['workUnit.department.compartment', 'location'])
+            ->whereNotNull('work_unit_id');
+
+        if ($request->filled('work_unit')) $query->where('work_unit_id', $request->work_unit);
+        if ($request->filled('location'))  $query->where('location_id', $request->location);
+        if ($request->filled('status'))    $query->where('status', $request->status);
+
+        $assets   = $query->orderBy('created_at', 'desc')->get();
         $statuses = WorkUnitAssetStatus::all()->keyBy('slug');
 
         $pdf = Pdf::loadView('pdf.work-unit-assets', [
-            'assets' => $assets,
+            'assets'   => $assets,
             'statuses' => $statuses
         ]);
         
-        return $pdf->download("monitoring_aset_unit_kerja_" . date('Y-m-d_H-i') . ".pdf");
+        return $pdf->stream("monitoring_aset_unit_kerja_" . date('Y-m-d_H-i') . ".pdf");
     }
 
     public function trash(): View

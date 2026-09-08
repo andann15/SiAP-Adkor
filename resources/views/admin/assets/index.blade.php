@@ -3,13 +3,13 @@
         <x-ui.page-header title="Kelola Aset Individu" description="Pantau dan kelola aset individu yang tidak terikat pada unit kerja.">
             <x-slot name="action">
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('admin.assets.export-csv') }}" class="group inline-flex items-center gap-2 px-4 py-2 border border-gray-200 text-gray-600 hover:border-brand hover:text-brand transition-colors duration-200 rounded-lg text-sm font-medium">
+                    <a href="{{ route('admin.assets.export-csv', request()->all()) }}" class="group inline-flex items-center gap-2 px-4 py-2 border border-gray-200 text-gray-600 hover:border-brand hover:text-brand transition-colors duration-200 rounded-lg text-sm font-medium">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                         Unduh CSV
                     </a>
-                    <a href="{{ route('admin.assets.export-pdf') }}" class="group inline-flex items-center gap-2 px-4 py-2 border border-gray-200 text-gray-600 hover:border-brand hover:text-brand transition-colors duration-200 rounded-lg text-sm font-medium">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        Unduh PDF
+                    <a href="{{ route('admin.assets.export-pdf', request()->all()) }}" target="_blank" class="group inline-flex items-center gap-2 px-4 py-2 border border-gray-200 text-gray-600 hover:border-brand hover:text-brand transition-colors duration-200 rounded-lg text-sm font-medium">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                        Cetak PDF
                     </a>
                     @can('assets.create')
                     <a href="{{ route('admin.assets.create') }}" class="group inline-flex items-center gap-2 px-4 py-2 bg-brand text-sidebar hover:bg-brand/90 transition-colors duration-200 rounded-lg shadow-sm font-medium text-sm">
@@ -30,20 +30,38 @@
             @endif
 
             <x-ui.card :padded="false">
-                <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                    <form method="GET" action="{{ route('admin.assets.index') }}" class="flex items-center gap-2">
+                <div class="p-4 border-b border-gray-100 bg-gray-50/50">
+                    <form method="GET" action="{{ route('admin.assets.index') }}" class="flex flex-wrap items-center gap-2">
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
-                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari kode, nama, atau kategori..." class="pl-10 rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand w-72">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari kode atau nama..." class="pl-10 rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand w-56">
                         </div>
-                        <button type="submit" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors">Cari</button>
-                        @if(request('search'))
-                            <a href="{{ route('admin.assets.index') }}" class="px-3 py-2 text-gray-500 hover:text-gray-700 text-sm">Reset</a>
+                        <select name="category" class="rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand">
+                            <option value="">Semua Kategori</option>
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                        <select name="location" class="rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand">
+                            <option value="">Semua Lokasi</option>
+                            @foreach($locations as $loc)
+                                <option value="{{ $loc->id }}" {{ request('location') == $loc->id ? 'selected' : '' }}>{{ $loc->name }}</option>
+                            @endforeach
+                        </select>
+                        <select name="status" class="rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand">
+                            <option value="">Semua Status</option>
+                            @foreach($statuses as $s)
+                                <option value="{{ $s->slug }}" {{ request('status') == $s->slug ? 'selected' : '' }}>{{ $s->name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="px-4 py-2 bg-brand text-sidebar hover:bg-brand/90 rounded-lg text-sm font-medium transition-colors">Filter</button>
+                        @if(request()->anyFilled(['search','category','location','status']))
+                            <a href="{{ route('admin.assets.index') }}" class="px-3 py-2 text-gray-500 hover:text-red-600 text-sm border border-gray-200 rounded-lg">✕ Reset</a>
                         @endif
                     </form>
-                    <p class="text-xs text-gray-400">{{ $assets->total() }} aset ditemukan</p>
+                    <p class="text-xs text-gray-400 mt-2">{{ $assets->total() }} aset ditemukan</p>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -77,7 +95,8 @@
                                     </td>
                                     <td class="px-5 py-4 text-center">
                                         @php
-                                            $statusName = $statuses[$asset->status] ?? $asset->status;
+                                            $s = $statuses[$asset->status] ?? null;
+                                            $statusName = $s ? $s->name : $asset->status;
                                         @endphp
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                             {{ $statusName }}

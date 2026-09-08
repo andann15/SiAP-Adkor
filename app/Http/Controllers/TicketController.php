@@ -79,9 +79,18 @@ class TicketController extends Controller
                 break;
         }
 
-        $tickets = $query->latest()->paginate(15)->withQueryString();
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
 
-        return view('tickets.index', compact('tickets', 'counts', 'activeTab'));
+        if ($request->filled('priority')) {
+            $query->where('ticket_priority_id', $request->priority);
+        }
+
+        $tickets   = $query->latest()->paginate(15)->withQueryString();
+        $priorities = TicketPriority::where('is_active', true)->orderBy('name')->get();
+
+        return view('tickets.index', compact('tickets', 'counts', 'activeTab', 'priorities'));
     }
 
     public function create(Request $request): View
@@ -280,6 +289,8 @@ class TicketController extends Controller
         } else {
             $query->where('created_by', $request->user()->id);
         }
+        if ($request->filled('status'))   $query->where('status', $request->status);
+        if ($request->filled('priority')) $query->where('ticket_priority_id', $request->priority);
         $tickets = $query->latest()->get();
         return $this->generateCsv($tickets, "daftar_tiket_" . date('Y-m-d_H-i') . ".csv");
     }
@@ -349,23 +360,25 @@ class TicketController extends Controller
         } else {
             $query->where('created_by', $request->user()->id);
         }
+        if ($request->filled('status'))   $query->where('status', $request->status);
+        if ($request->filled('priority')) $query->where('ticket_priority_id', $request->priority);
         $tickets = $query->latest()->get();
 
         $statusMap = [
             'waiting_approval' => 'Menunggu Persetujuan',
-            'assigned' => 'Ditugaskan',
-            'checking' => 'Sedang Diperiksa',
-            'completed' => 'Selesai',
-            'closed' => 'Ditutup',
-            'rejected' => 'Ditolak',
-            'cancelled' => 'Dibatalkan',
+            'assigned'         => 'Ditugaskan',
+            'checking'         => 'Sedang Diperiksa',
+            'completed'        => 'Selesai',
+            'closed'           => 'Ditutup',
+            'rejected'         => 'Ditolak',
+            'cancelled'        => 'Dibatalkan',
         ];
 
         $pdf = Pdf::loadView('pdf.tickets', [
-            'tickets' => $tickets,
+            'tickets'   => $tickets,
             'statusMap' => $statusMap
         ]);
         
-        return $pdf->download("daftar_tiket_" . date('Y-m-d_H-i') . ".pdf");
+        return $pdf->stream("daftar_tiket_" . date('Y-m-d_H-i') . ".pdf");
     }
 }
