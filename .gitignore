@@ -29,3 +29,9 @@ docker-compose.override.yml
 
 # Database dumps (keep local as backup, not in Git)
 *.sql
+
+# Binary/media files
+*.pptx
+*.xlsx
+*.docx
+*.pdf

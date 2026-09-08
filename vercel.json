@@ -1,11 +1,12 @@
 {
   "version": 2,
   "regions": ["sin1"],
-  "functions": {
-    "api/index.php": {
-      "runtime": "vercel-php@0.7.4"
+  "builds": [
+    {
+      "src": "api/index.php",
+      "use": "vercel-php@0.7.4"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/build/(.*)",
@@ -16,8 +17,16 @@
       "dest": "/public/storage/$1"
     },
     {
-      "src": "/(.*)\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)",
-      "dest": "/public/$1.$2"
+      "src": "/favicon.ico",
+      "dest": "/public/favicon.ico"
+    },
+    {
+      "src": "/(.*)\\.css",
+      "dest": "/public/$1.css"
+    },
+    {
+      "src": "/(.*)\\.js",
+      "dest": "/public/$1.js"
     },
     {
       "src": "/(.*)",
