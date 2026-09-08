@@ -18,47 +18,41 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// TEMPORARY: Run this once to seed the database, then remove
-Route::get('/run-seed-xk29zq', function () {
-    if (app()->environment('production')) {
-        try {
-            \Illuminate\Support\Facades\Artisan::call('db:seed', [
-                '--class' => 'RolePermissionSeeder',
-                '--force' => true,
-            ]);
-            $output1 = \Illuminate\Support\Facades\Artisan::output();
+// TEMPORARY DEBUG ROUTE - remove after diagnosis
+Route::get('/debug-admin-xk29zq', function () {
+    try {
+        $stats = [
+            'total' => \App\Models\Ticket::count(),
+            'waiting' => \App\Models\Ticket::where('status', 'waiting_approval')->count(),
+            'in_progress' => \App\Models\Ticket::whereIn('status', ['assigned', 'checking'])->count(),
+            'sla_breached' => \App\Models\Ticket::where('sla_breached', true)->count(),
+        ];
+        $tickets = \App\Models\Ticket::with(['asset', 'creator', 'priority'])->latest()->paginate(6);
 
-            \Illuminate\Support\Facades\Artisan::call('db:seed', [
-                '--class' => 'MasterDataSeeder',
-                '--force' => true,
-            ]);
-            $output2 = \Illuminate\Support\Facades\Artisan::output();
+        // Check user roles
+        $user = auth()->user();
+        $roles = $user ? $user->getRoleNames() : 'not logged in';
+        $permissions = $user ? $user->getAllPermissions()->pluck('name') : [];
 
-            \Illuminate\Support\Facades\Artisan::call('db:seed', [
-                '--class' => 'UserSeeder',
-                '--force' => true,
-            ]);
-            $output3 = \Illuminate\Support\Facades\Artisan::output();
-
-            \Illuminate\Support\Facades\Artisan::call('db:seed', [
-                '--class' => 'DefaultAssetStatusesSeeder',
-                '--force' => true,
-            ]);
-            $output4 = \Illuminate\Support\Facades\Artisan::output();
-
-            return response()->json([
-                'status' => 'success',
-                'RolePermissionSeeder' => $output1,
-                'MasterDataSeeder' => $output2,
-                'UserSeeder' => $output3,
-                'DefaultAssetStatusesSeeder' => $output4,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
-        }
+        return response()->json([
+            'status' => 'ok',
+            'stats' => $stats,
+            'ticket_count' => $tickets->count(),
+            'user' => $user ? $user->email : null,
+            'roles' => $roles,
+            'permissions' => $permissions,
+            'bootstrap_path' => app()->bootstrapPath(),
+            'storage_path' => storage_path(),
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => collect(explode("\n", $e->getTraceAsString()))->take(10)->values(),
+        ], 500);
     }
-    return response()->json(['status' => 'not_production']);
-});
+})->middleware('auth');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
