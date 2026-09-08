@@ -18,6 +18,48 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// TEMPORARY: Run this once to seed the database, then remove
+Route::get('/run-seed-xk29zq', function () {
+    if (app()->environment('production')) {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('db:seed', [
+                '--class' => 'RolePermissionSeeder',
+                '--force' => true,
+            ]);
+            $output1 = \Illuminate\Support\Facades\Artisan::output();
+
+            \Illuminate\Support\Facades\Artisan::call('db:seed', [
+                '--class' => 'MasterDataSeeder',
+                '--force' => true,
+            ]);
+            $output2 = \Illuminate\Support\Facades\Artisan::output();
+
+            \Illuminate\Support\Facades\Artisan::call('db:seed', [
+                '--class' => 'UserSeeder',
+                '--force' => true,
+            ]);
+            $output3 = \Illuminate\Support\Facades\Artisan::output();
+
+            \Illuminate\Support\Facades\Artisan::call('db:seed', [
+                '--class' => 'DefaultAssetStatusesSeeder',
+                '--force' => true,
+            ]);
+            $output4 = \Illuminate\Support\Facades\Artisan::output();
+
+            return response()->json([
+                'status' => 'success',
+                'RolePermissionSeeder' => $output1,
+                'MasterDataSeeder' => $output2,
+                'UserSeeder' => $output3,
+                'DefaultAssetStatusesSeeder' => $output4,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+    return response()->json(['status' => 'not_production']);
+});
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
