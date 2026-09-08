@@ -132,7 +132,9 @@ class WorkUnitAssetController extends Controller
                                     fn($a, $b) => strcmp($a->name ?? '', $b->name ?? ''),
                                 ])
                                 ->values(),
-            'statuses'   => WorkUnitAssetStatus::where('is_active', true)->orderBy('order')->orderBy('name')->get(),
+            'statuses'   => WorkUnitAssetStatus::where('is_active', true)
+                                ->orderBy('order')->orderBy('name')
+                                ->pluck('name', 'slug'),
         ];
     }
 

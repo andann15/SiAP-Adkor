@@ -136,7 +136,9 @@ class AssetController extends Controller
             'locations'  => Location::where('is_active', true)->orderBy('name')->get(),
             'users'      => User::orderBy('name')->get(),
             'workUnits'  => WorkUnit::with('department.compartment')->where('is_active', true)->get(),
-            'statuses'   => WorkUnitAssetStatus::where('is_active', true)->orderBy('order')->orderBy('name')->get(),
+            'statuses'   => WorkUnitAssetStatus::where('is_active', true)
+                                ->orderBy('order')->orderBy('name')
+                                ->pluck('name', 'slug'),
         ];
     }
 
