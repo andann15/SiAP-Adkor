@@ -74,6 +74,8 @@ return [
                     return null;
                 })(),
                 PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                PDO::ATTR_TIMEOUT => 10,
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET SESSION time_zone='+07:00', sql_mode='STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO'",
             ]) : [],
         ],
 
