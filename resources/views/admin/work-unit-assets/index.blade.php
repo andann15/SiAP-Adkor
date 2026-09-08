@@ -39,7 +39,9 @@
                         <select name="work_unit" class="rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand">
                             <option value="">Semua Unit Kerja</option>
                             @foreach($workUnits as $wu)
-                                <option value="{{ $wu->id }}" {{ request('work_unit') == $wu->id ? 'selected' : '' }}>{{ $wu->name }}</option>
+                                <option value="{{ $wu->id }}" {{ request('work_unit') == $wu->id ? 'selected' : '' }}>
+                                    {{ $wu->department?->compartment?->name ? $wu->department->compartment->name . ' - ' : '' }}{{ $wu->department?->name ? $wu->department->name . ' - ' : '' }}{{ $wu->name }}
+                                </option>
                             @endforeach
                         </select>
                         <select name="location" class="rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand">

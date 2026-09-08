@@ -48,7 +48,15 @@ class WorkUnitAssetController extends Controller
 
         $assets   = $query->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
         $statuses  = WorkUnitAssetStatus::all()->keyBy('slug');
-        $workUnits = \App\Models\WorkUnit::orderBy('name')->get();
+        $workUnits = \App\Models\WorkUnit::with('department.compartment')
+                        ->where('is_active', true)
+                        ->get()
+                        ->sortBy([
+                            fn($a, $b) => strcmp($a->department?->compartment?->name ?? '', $b->department?->compartment?->name ?? ''),
+                            fn($a, $b) => strcmp($a->department?->name ?? '', $b->department?->name ?? ''),
+                            fn($a, $b) => strcmp($a->name ?? '', $b->name ?? ''),
+                        ])
+                        ->values();
         $locations = Location::orderBy('name')->get();
 
         return view('admin.work-unit-assets.index', compact('assets', 'statuses', 'workUnits', 'locations'));

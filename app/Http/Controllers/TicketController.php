@@ -124,11 +124,12 @@ class TicketController extends Controller
         $validated = $request->validate([
             'asset_id'    => ['required', 'exists:assets,id'],
             'description' => ['required', 'string', 'max:2000'],
-            'photo'       => ['required', 'image', 'mimes:jpeg,png,jpg,webp,heic', 'max:4096'],
+            'photo'       => ['required', 'file', 'mimes:jpeg,png,jpg,webp,heic,pdf', 'max:8192'],
         ]);
 
         $uploadResult = cloudinary()->uploadApi()->upload($request->file('photo')->getRealPath(), [
-            'folder' => 'siap/tickets/reports',
+            'folder'        => 'siap/tickets/reports',
+            'resource_type' => 'auto',
         ]);
         $photoUrl = $uploadResult['secure_url'];
 
@@ -204,11 +205,12 @@ class TicketController extends Controller
         $this->authorize('updateStatus', $ticket);
 
         $validated = $request->validate([
-            'proof_photo' => ['required', 'image', 'mimes:jpeg,png,jpg,webp,heic', 'max:4096'],
+            'proof_photo' => ['required', 'file', 'mimes:jpeg,png,jpg,webp,heic,pdf', 'max:8192'],
         ]);
 
         $uploadResult = cloudinary()->uploadApi()->upload($request->file('proof_photo')->getRealPath(), [
-            'folder' => 'siap/tickets/proofs',
+            'folder'        => 'siap/tickets/proofs',
+            'resource_type' => 'auto',
         ]);
         $proofUrl = $uploadResult['secure_url'];
 
