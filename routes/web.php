@@ -18,41 +18,6 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// TEMPORARY DEBUG ROUTE - remove after diagnosis
-Route::get('/debug-admin-xk29zq', function () {
-    try {
-        $stats = [
-            'total' => \App\Models\Ticket::count(),
-            'waiting' => \App\Models\Ticket::where('status', 'waiting_approval')->count(),
-            'in_progress' => \App\Models\Ticket::whereIn('status', ['assigned', 'checking'])->count(),
-            'sla_breached' => \App\Models\Ticket::where('sla_breached', true)->count(),
-        ];
-        $tickets = \App\Models\Ticket::with(['asset', 'creator', 'priority'])->latest()->paginate(6);
-
-        // Check user roles
-        $user = auth()->user();
-        $roles = $user ? $user->getRoleNames() : 'not logged in';
-        $permissions = $user ? $user->getAllPermissions()->pluck('name') : [];
-
-        return response()->json([
-            'status' => 'ok',
-            'stats' => $stats,
-            'ticket_count' => $tickets->count(),
-            'user' => $user ? $user->email : null,
-            'roles' => $roles,
-            'permissions' => $permissions,
-            'bootstrap_path' => app()->bootstrapPath(),
-            'storage_path' => storage_path(),
-        ]);
-    } catch (\Throwable $e) {
-        return response()->json([
-            'error' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-            'trace' => collect(explode("\n", $e->getTraceAsString()))->take(10)->values(),
-        ], 500);
-    }
-})->middleware('auth');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])

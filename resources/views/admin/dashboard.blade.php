@@ -52,14 +52,14 @@
                             <div class="flex items-start justify-between gap-2">
                                 <div>
                                     <span class="font-mono text-xs font-semibold text-gray-600">TKT-{{ strtoupper(substr($ticket->id, 0, 8)) }}</span>
-                                    <p class="text-sm font-semibold text-gray-800 mt-0.5">{{ $ticket->asset->name }}</p>
+                                    <p class="text-sm font-semibold text-gray-800 mt-0.5">{{ $ticket->asset->name ?? 'Aset tidak ditemukan' }}</p>
                                 </div>
                                 <x-ticket-status-badge :status="$ticket->status" />
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
                                     <x-ticket-priority-dot :priority="$ticket->priority->name ?? null" />
-                                    <span class="text-xs text-gray-500">{{ $ticket->creator->name }}</span>
+                                    <span class="text-xs text-gray-500">{{ $ticket->creator->name ?? 'Sistem' }}</span>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="text-xs text-gray-400">{{ $ticket->created_at->format('d M Y') }}</span>
@@ -93,8 +93,8 @@
                             @forelse ($tickets as $ticket)
                                 <tr class="hover:bg-slate-50 transition-colors">
                                     <td class="px-4 py-3 font-mono text-xs font-semibold text-gray-700">TKT-{{ strtoupper(substr($ticket->id, 0, 8)) }}</td>
-                                    <td class="px-4 py-3 text-sm font-medium text-gray-800">{{ $ticket->asset->name }}</td>
-                                    <td class="px-4 py-3 text-xs text-gray-600">{{ $ticket->creator->name }}</td>
+                                    <td class="px-4 py-3 text-sm font-medium text-gray-800">{{ $ticket->asset->name ?? 'Aset tidak ditemukan' }}</td>
+                                    <td class="px-4 py-3 text-xs text-gray-600">{{ $ticket->creator->name ?? 'Sistem' }}</td>
                                     <td class="px-4 py-3"><x-ticket-priority-dot :priority="$ticket->priority->name ?? null" /></td>
                                     <td class="px-4 py-3"><x-ticket-status-badge :status="$ticket->status" /></td>
                                     <td class="px-4 py-3 text-xs text-gray-500">{{ $ticket->created_at->format('d M Y') }}</td>
