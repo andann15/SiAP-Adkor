@@ -40,7 +40,7 @@ class UserDashboardController extends Controller
 
         $myAssets = Asset::with(['category', 'brand', 'location'])
             ->where('current_user_id', $userId)
-            ->where('status', 'active')
+            ->where('status', '!=', 'disposed')
             ->orderBy('name')
             ->get();
             

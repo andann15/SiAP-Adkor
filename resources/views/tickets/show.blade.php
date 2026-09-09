@@ -58,13 +58,25 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    @php
+                        // Cloudinary stores PDFs as raw resource: URL contains /raw/upload/
+                        // Or the file extension is .pdf
+                        function isPdfUrl($url) {
+                            if (!$url) return false;
+                            $path = parse_url($url, PHP_URL_PATH) ?? '';
+                            return str_contains($path, '/raw/upload/') || strtolower(pathinfo($path, PATHINFO_EXTENSION)) === 'pdf';
+                        }
+                    @endphp
                     <div>
                         <p class="text-sm text-gray-500 mb-1">Bukti Laporan Awal</p>
-                        @php $ext = pathinfo(parse_url($ticket->photo_url, PHP_URL_PATH), PATHINFO_EXTENSION); @endphp
-                        @if(strtolower($ext) === 'pdf')
-                            <a href="{{ $ticket->photo_url }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M4 18h12V8l-4-4H4v14z" opacity=".3"/><path d="M9 13H7v-1h2v1zm4 0h-2v-1h2v1zm-4-3H7V9h2v1zm4 0h-2V9h2v1zM8 4H4v14h12V8l-4-4zm6 13H6V5h5v3h3v9z"/></svg>
-                                Lihat PDF Laporan
+                        @if(isPdfUrl($ticket->photo_url))
+                            <a href="{{ $ticket->photo_url }}" target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors border border-red-200">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/>
+                                    <path d="M8 16h8v2H8zm0-4h5v2H8z"/>
+                                </svg>
+                                Lihat / Unduh PDF Laporan
                             </a>
                         @else
                             <img src="{{ $ticket->photo_url }}" class="rounded border max-h-48 object-contain" alt="Foto Laporan">
@@ -73,11 +85,14 @@
                     @if ($ticket->proof_photo_url)
                         <div>
                             <p class="text-sm text-gray-500 mb-1">Bukti Perbaikan</p>
-                            @php $extProof = pathinfo(parse_url($ticket->proof_photo_url, PHP_URL_PATH), PATHINFO_EXTENSION); @endphp
-                            @if(strtolower($extProof) === 'pdf')
-                                <a href="{{ $ticket->proof_photo_url }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M4 18h12V8l-4-4H4v14z" opacity=".3"/><path d="M9 13H7v-1h2v1zm4 0h-2v-1h2v1zm-4-3H7V9h2v1zm4 0h-2V9h2v1zM8 4H4v14h12V8l-4-4zm6 13H6V5h5v3h3v9z"/></svg>
-                                    Lihat PDF Bukti Perbaikan
+                            @if(isPdfUrl($ticket->proof_photo_url))
+                                <a href="{{ $ticket->proof_photo_url }}" target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors border border-red-200">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/>
+                                        <path d="M8 16h8v2H8zm0-4h5v2H8z"/>
+                                    </svg>
+                                    Lihat / Unduh PDF Bukti Perbaikan
                                 </a>
                             @else
                                 <img src="{{ $ticket->proof_photo_url }}" class="rounded border max-h-48 object-contain" alt="Foto Bukti">
