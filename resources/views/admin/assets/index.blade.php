@@ -36,7 +36,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
-                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari kode atau nama..." class="pl-10 rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand w-56">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, model, pengguna..." class="pl-10 rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand w-64">
                         </div>
                         <select name="category" class="rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand">
                             <option value="">Semua Kategori</option>
@@ -56,8 +56,14 @@
                                 <option value="{{ $s->slug }}" {{ request('status') == $s->slug ? 'selected' : '' }}>{{ $s->name }}</option>
                             @endforeach
                         </select>
+                        <select name="user_id" class="rounded-lg border-gray-200 text-sm focus:ring-brand focus:border-brand">
+                            <option value="">Semua Pengguna</option>
+                            @foreach($users as $u)
+                                <option value="{{ $u->id }}" {{ request('user_id') == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
+                            @endforeach
+                        </select>
                         <button type="submit" class="px-4 py-2 bg-brand text-sidebar hover:bg-brand/90 rounded-lg text-sm font-medium transition-colors">Filter</button>
-                        @if(request()->anyFilled(['search','category','location','status']))
+                        @if(request()->anyFilled(['search','category','location','status','user_id']))
                             <a href="{{ route('admin.assets.index') }}" class="px-3 py-2 text-gray-500 hover:text-red-600 text-sm border border-gray-200 rounded-lg">✕ Reset</a>
                         @endif
                     </form>
@@ -70,6 +76,7 @@
                             <tr class="bg-gray-50">
                                 <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Aset</th>
                                 <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Kategori & Merek</th>
+                                <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Model & Pengguna</th>
                                 <th class="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Lokasi</th>
                                 <th class="px-5 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
                                 <th class="px-5 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -88,6 +95,12 @@
                                         <div class="flex flex-col">
                                             <span class="text-sm font-medium text-gray-800">{{ $asset->category->name }}</span>
                                             <span class="text-xs text-gray-500 mt-0.5">{{ $asset->brand->name ?? '-' }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-4">
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-medium text-gray-800">{{ $asset->model ?? '-' }}</span>
+                                            <span class="text-xs text-gray-500 mt-0.5">{{ $asset->user->name ?? '-' }}</span>
                                         </div>
                                     </td>
                                     <td class="px-5 py-4 text-sm text-gray-700">
@@ -128,7 +141,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-5 py-16 text-center text-gray-500">
+                                    <td colspan="6" class="px-5 py-16 text-center text-gray-500">
                                         <svg class="mx-auto h-12 w-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                                         <p class="text-base font-medium text-gray-900 mb-1">Belum ada aset</p>
                                         <p class="text-sm text-gray-500 mb-4">Tambahkan aset pertama Anda.</p>

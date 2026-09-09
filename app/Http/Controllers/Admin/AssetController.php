@@ -20,14 +20,18 @@ class AssetController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Asset::with(['category', 'brand', 'location'])->whereNull('work_unit_id');
+        $query = Asset::with(['category', 'brand', 'location', 'user'])->whereNull('work_unit_id');
 
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('code', 'like', "%{$search}%")
+                  ->orWhere('model', 'like', "%{$search}%")
                   ->orWhereHas('category', function ($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('user', function ($q) use ($search) {
                       $q->where('name', 'like', "%{$search}%");
                   });
             });
@@ -45,12 +49,17 @@ class AssetController extends Controller
             $query->where('location_id', $request->location);
         }
 
+        if ($request->filled('user_id')) {
+            $query->where('current_user_id', $request->user_id);
+        }
+
         $assets     = $query->orderBy('name')->paginate(10)->withQueryString();
         $statuses   = WorkUnitAssetStatus::orderBy('order')->orderBy('name')->get()->keyBy('slug');
         $categories = AssetCategory::orderBy('name')->get();
         $locations  = Location::orderBy('name')->get();
+        $users      = User::orderBy('name')->get();
 
-        return view('admin.assets.index', compact('assets', 'statuses', 'categories', 'locations'));
+        return view('admin.assets.index', compact('assets', 'statuses', 'categories', 'locations', 'users'));
     }
 
     public function create(): View
