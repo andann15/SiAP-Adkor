@@ -79,7 +79,7 @@
 
                         <!-- Input file biasa (upload) -->
                         <div id="upload-section">
-                            <input type="file" name="photo" id="photo" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-sidebar file:text-white hover:file:bg-orange-500 transition-colors">
+                            <input type="file" name="photo" id="photo" accept="image/*,.pdf" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-sidebar file:text-white hover:file:bg-orange-500 transition-colors">
                         </div>
 
                         <!-- Kamera Section -->
@@ -214,7 +214,11 @@
             const file = this.files[0];
             if (file) {
                 const url = URL.createObjectURL(file);
-                uploadPreview.src = url;
+                if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+                    uploadPreviewWrap.innerHTML = `<div class="p-4 border rounded-lg bg-gray-50 flex items-center gap-2"><svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg><span class="text-sm font-medium text-gray-700">${file.name}</span></div>`;
+                } else {
+                    uploadPreviewWrap.innerHTML = `<img id="upload-preview" class="rounded-lg max-h-48 object-contain border" src="${url}" alt="Preview">`;
+                }
                 uploadPreviewWrap.classList.remove('hidden');
             }
         });
@@ -247,9 +251,12 @@
                 return;
             }
 
-            // Mode upload — kompresi jika > 1MB
+            // Mode upload — kompresi jika > 1MB dan bukan PDF
             const file = photoInput.files[0];
-            if (!file || file.size < 1024 * 1024) return;
+            if (!file) return;
+            
+            const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+            if (isPdf || file.size < 1024 * 1024) return;
 
             e.preventDefault();
             submitBtn.disabled = true;
