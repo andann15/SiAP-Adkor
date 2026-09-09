@@ -100,7 +100,7 @@
                                     <td class="px-5 py-4">
                                         <div class="flex flex-col">
                                             <span class="text-sm font-medium text-gray-800">{{ $asset->model ?? '-' }}</span>
-                                            <span class="text-xs text-gray-500 mt-0.5">{{ $asset->user->name ?? '-' }}</span>
+                                            <span class="text-xs text-gray-500 mt-0.5">{{ $asset->user?->name ?? '-' }}</span>
                                         </div>
                                     </td>
                                     <td class="px-5 py-4 text-sm text-gray-700">

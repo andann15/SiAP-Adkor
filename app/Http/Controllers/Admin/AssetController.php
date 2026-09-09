@@ -225,7 +225,7 @@ class AssetController extends Controller
                     $asset->brand->name ?? '-',
                     $asset->location->name ?? '-',
                     $statusName,
-                    $asset->user->name ?? '-',
+                    $asset->user?->name ?? '-',
                 ], ';');
             }
             fclose($file);
