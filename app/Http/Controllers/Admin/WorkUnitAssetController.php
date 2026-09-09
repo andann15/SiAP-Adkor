@@ -295,9 +295,16 @@ class WorkUnitAssetController extends Controller
 
     public function forceDelete($id): RedirectResponse
     {
-        $asset = Asset::onlyTrashed()->whereNotNull('work_unit_id')->findOrFail($id);
-        $asset->forceDelete();
+        try {
+            $asset = Asset::onlyTrashed()->whereNotNull('work_unit_id')->findOrFail($id);
+            $asset->forceDelete();
 
-        return back()->with('success', 'Aset Unit Kerja dihapus secara permanen.');
+            return back()->with('success', 'Aset Unit Kerja dihapus secara permanen.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() === '23000') {
+                return back()->with('error', 'Aset tidak bisa dihapus permanen karena masih terkait dengan riwayat tiket atau data lainnya.');
+            }
+            return back()->with('error', 'Terjadi kesalahan saat menghapus aset secara permanen.');
+        }
     }
 }

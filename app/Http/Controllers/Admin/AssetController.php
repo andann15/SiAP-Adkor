@@ -163,10 +163,17 @@ class AssetController extends Controller
 
     public function forceDelete($id): RedirectResponse
     {
-        $asset = Asset::onlyTrashed()->findOrFail($id);
-        $asset->forceDelete();
+        try {
+            $asset = Asset::onlyTrashed()->findOrFail($id);
+            $asset->forceDelete();
 
-        return back()->with('success', 'Aset dihapus secara permanen.');
+            return back()->with('success', 'Aset dihapus secara permanen.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() === '23000') {
+                return back()->with('error', 'Aset tidak bisa dihapus permanen karena masih terkait dengan riwayat tiket atau data lainnya.');
+            }
+            return back()->with('error', 'Terjadi kesalahan saat menghapus aset secara permanen.');
+        }
     }
 
     public function exportCsv(Request $request)

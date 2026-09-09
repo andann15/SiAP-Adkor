@@ -263,11 +263,18 @@ class TicketController extends Controller
 
     public function forceDelete($id): RedirectResponse
     {
-        $ticket = Ticket::onlyTrashed()->findOrFail($id);
-        $this->authorize('delete', $ticket);
-        $ticket->forceDelete();
+        try {
+            $ticket = Ticket::onlyTrashed()->findOrFail($id);
+            $this->authorize('delete', $ticket);
+            $ticket->forceDelete();
 
-        return back()->with('success', 'Tiket dihapus secara permanen.');
+            return back()->with('success', 'Tiket dihapus secara permanen.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() === '23000') {
+                return back()->with('error', 'Tiket tidak bisa dihapus permanen karena masih terkait dengan data riwayat.');
+            }
+            return back()->with('error', 'Terjadi kesalahan saat menghapus tiket secara permanen.');
+        }
     }
 
     private function generateTicketNumber(): string
