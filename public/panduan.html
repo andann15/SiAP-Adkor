@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Panduan - SiAP (Sistem Informasi Aset Perusahaan)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0B1E36;
+            --accent: #F97316;
+            --accent-light: #FDBA74;
+            --bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --section-bg: #f8fafc;
+            --info-bg: #eff6ff;
+            --info-border: #bfdbfe;
+            --warning-bg: #fffbeb;
+            --warning-border: #fde68a;
+            --success-bg: #f0fdf4;
+            --success-border: #bbf7d0;
+            --tip-bg: #faf5ff;
+            --tip-border: #e9d5ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            background: var(--bg);
+            font-size: 11pt;
+        }
+
+        @media print {
+            body { font-size: 10pt; }
+            .cover-page, .toc-page { page-break-after: always; }
+            .chapter { page-break-before: always; }
+            .no-break { page-break-inside: avoid; }
+            .step-box { page-break-inside: avoid; }
+            @page { margin: 2cm 2.5cm; size: A4; }
+        }
+
+        .cover-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary) 0%, #1a3a5c 50%, #0d2847 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: rgba(249, 115, 22, 0.08);
+        }
+
+        .cover-page::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -20%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(249, 115, 22, 0.05);
+        }
+
+        .cover-logo {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+
+        .cover-logo-text {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .cover-logo-text span {
+            color: var(--accent);
+        }
+
+        .cover-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            z-index: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .cover-subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+            z-index: 1;
+        }
+
+        .cover-app-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 5px;
+            z-index: 1;
+        }
+
+        .cover-app-fullname {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            z-index: 1;
+        }
+
+        .cover-version {
+            position: absolute;
+            bottom: 40px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            z-index: 1;
+        }
+
+        .cover-org {
+            margin-top: 50px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            z-index: 1;
+        }
+
+        .cover-org strong {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .toc-page {
+            padding: 60px 80px;
+            min-height: 100vh;
+        }
+
+        .toc-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-list li {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toc-list li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .toc-list li a:hover {
+            color: var(--accent);
+        }
+
+        .toc-chapter {
+            font-weight: 700;
+            font-size: 13pt;
+            color: var(--primary);
+            padding-top: 18px !important;
+        }
+
+        .toc-sub {
+            padding-left: 25px !important;
+            font-size: 10pt;
+            color: var(--text-muted);
+        }
+
+        .content {
+            padding: 50px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .chapter {
+            margin-bottom: 50px;
+        }
+
+        .chapter-header {
+            background: linear-gradient(135deg, var(--primary), #1a3a5c);
+            color: white;
+            padding: 30px 35px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .chapter-number {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-light);
+            margin-bottom: 5px;
+        }
+
+        .chapter-title {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 35px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .step-box {
+            background: var(--section-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin: 15px 0;
+        }
+
+        .step-box .step-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-num {
+            background: var(--accent);
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-box ol, .step-box ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .step-box li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid;
+        }
+
+        .alert-info { background: var(--info-bg); border-color: #3b82f6; }
+        .alert-warning { background: var(--warning-bg); border-color: #f59e0b; }
+        .alert-success { background: var(--success-bg); border-color: #22c55e; }
+        .alert-tip { background: var(--tip-bg); border-color: #a855f7; }
+
+        .alert-title {
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .alert-info .alert-title { color: #2563eb; }
+        .alert-warning .alert-title { color: #d97706; }
+        .alert-success .alert-title { color: #16a34a; }
+        .alert-tip .alert-title { color: #9333ea; }
+
+        .alert p { margin-bottom: 0; font-size: 10.5pt; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 10pt;
+        }
+
+        thead th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        thead th:first-child { border-radius: 8px 0 0 0; }
+        thead th:last-child { border-radius: 0 8px 0 0; }
+
+        tbody td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:nth-child(even) { background: var(--section-bg); }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 9pt;
+            font-weight: 600;
+        }
+
+        .badge-blue { background: #dbeafe; color: #1d4ed8; }
+        .badge-green { background: #dcfce7; color: #15803d; }
+        .badge-yellow { background: #fef3c7; color: #b45309; }
+        .badge-red { background: #fee2e2; color: #dc2626; }
+        .badge-gray { background: #f1f5f9; color: #475569; }
+        .badge-purple { background: #f3e8ff; color: #7c3aed; }
+        .badge-orange { background: #ffedd5; color: #c2410c; }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: var(--section-bg);
+            border-radius: 10px;
+        }
+
+        .flow-item {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 9.5pt;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .flow-arrow {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .menu-path {
+            background: var(--section-bg);
+            border: 1px solid var(--border);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 9.5pt;
+            font-weight: 600;
+            color: var(--primary);
+            white-space: nowrap;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed var(--border);
+            margin: 35px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .feature-card {
+            background: var(--section-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .feature-card .icon { font-size: 22px; margin-bottom: 6px; }
+        .feature-card .f-title { font-weight: 700; font-size: 12px; color: var(--primary); margin-bottom: 4px; }
+        .feature-card .f-desc { font-size: 9.5pt; color: var(--text-muted); line-height: 1.5; }
+
+        .role-box {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .role-card {
+            flex: 1;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .role-admin { background: linear-gradient(135deg, #0B1E36, #1a3a5c); color: white; }
+        .role-operator { background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; }
+        .role-user { background: linear-gradient(135deg, #0891b2, #22d3ee); color: white; }
+
+        .role-card .r-icon { font-size: 32px; margin-bottom: 8px; }
+        .role-card .r-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+        .role-card .r-desc { font-size: 9.5pt; opacity: 0.85; }
+    </style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover-page">
+    <div class="cover-logo">
+        <div class="cover-logo-text">S<span>i</span>AP</div>
+    </div>
+    <div class="cover-app-name">SiAP</div>
+    <div class="cover-app-fullname">Sistem Informasi Aset Perusahaan</div>
+    <div class="cover-title" style="margin-top: 30px;">Buku Panduan<br>Penggunaan Aplikasi</div>
+    <div class="cover-subtitle">Panduan lengkap untuk Administrator, Operator, dan Pengguna</div>
+    <div class="cover-org">
+        <strong>PT Pupuk Kalimantan Timur</strong><br>
+        Departemen K3 & Teknologi Informasi
+    </div>
+    <div class="cover-version">Versi 1.0 &mdash; September 2026</div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-page">
+    <div class="toc-title">Daftar Isi</div>
+    <ul class="toc-list">
+        <li class="toc-chapter"><a href="#bab1">BAB 1 &mdash; Pendahuluan</a></li>
+        <li class="toc-sub"><a href="#1-1">1.1 Tentang Aplikasi SiAP</a></li>
+        <li class="toc-sub"><a href="#1-2">1.2 Peran Pengguna (Hak Akses)</a></li>
+        <li class="toc-sub"><a href="#1-3">1.3 Persyaratan Sistem</a></li>
+        <li class="toc-sub"><a href="#1-4">1.4 Cara Login</a></li>
+        <li class="toc-chapter"><a href="#bab2">BAB 2 &mdash; Panduan Administrator</a></li>
+        <li class="toc-sub"><a href="#2-1">2.1 Dashboard Admin</a></li>
+        <li class="toc-sub"><a href="#2-2">2.2 Manajemen Aset Individu</a></li>
+        <li class="toc-sub"><a href="#2-3">2.3 Manajemen Aset Unit Kerja</a></li>
+        <li class="toc-sub"><a href="#2-4">2.4 Manajemen Tiket (Laporan Kerusakan)</a></li>
+        <li class="toc-sub"><a href="#2-5">2.5 Manajemen Data Master</a></li>
+        <li class="toc-sub"><a href="#2-6">2.6 Manajemen Pengguna</a></li>
+        <li class="toc-sub"><a href="#2-7">2.7 Pemulihan Data (Recovery)</a></li>
+        <li class="toc-sub"><a href="#2-8">2.8 Ekspor Data (CSV & PDF)</a></li>
+        <li class="toc-chapter"><a href="#bab3">BAB 3 &mdash; Panduan Operator</a></li>
+        <li class="toc-sub"><a href="#3-1">3.1 Dashboard Operator</a></li>
+        <li class="toc-sub"><a href="#3-2">3.2 Melihat dan Mengelola Aset</a></li>
+        <li class="toc-chapter"><a href="#bab4">BAB 4 &mdash; Panduan Pengguna (User)</a></li>
+        <li class="toc-sub"><a href="#4-1">4.1 Dashboard User</a></li>
+        <li class="toc-sub"><a href="#4-2">4.2 Melihat Aset Saya</a></li>
+        <li class="toc-sub"><a href="#4-3">4.3 Melaporkan Kerusakan (Membuat Tiket)</a></li>
+        <li class="toc-sub"><a href="#4-4">4.4 Memantau Status Perbaikan</a></li>
+        <li class="toc-chapter"><a href="#bab5">BAB 5 &mdash; Alur Tiket (Lifecycle)</a></li>
+        <li class="toc-chapter"><a href="#bab6">BAB 6 &mdash; Troubleshooting</a></li>
+    </ul>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+    <!-- BAB 1 -->
+    <div class="chapter" id="bab1">
+        <div class="chapter-header">
+            <div class="chapter-number">Bab 1</div>
+            <div class="chapter-title">Pendahuluan</div>
+        </div>
+
+        <h2 id="1-1">1.1 Tentang Aplikasi SiAP</h2>
+        <p><strong>SiAP (Sistem Informasi Aset Perusahaan)</strong> adalah aplikasi berbasis web yang dirancang untuk membantu perusahaan dalam mengelola, memantau, dan merawat seluruh aset yang dimiliki secara efisien dan terpusat.</p>
+        <p>Aplikasi ini memungkinkan pencatatan aset secara digital, pelacakan kondisi dan status aset, serta pengelolaan laporan kerusakan melalui sistem tiket yang terstruktur.</p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon">&#128230;</div>
+                <div class="f-title">Manajemen Aset</div>
+                <div class="f-desc">Catat, kelola, dan pantau seluruh aset individu maupun unit kerja secara digital.</div>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#127915;</div>
+                <div class="f-title">Sistem Tiket</div>
+                <div class="f-desc">Laporkan kerusakan aset dan pantau proses perbaikan secara real-time.</div>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128202;</div>
+                <div class="f-title">Dashboard &amp; Statistik</div>
+                <div class="f-desc">Lihat ringkasan data aset, tiket, dan kondisi peralatan melalui dashboard interaktif.</div>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128196;</div>
+                <div class="f-title">Ekspor Laporan</div>
+                <div class="f-desc">Unduh laporan dalam format CSV dan PDF untuk keperluan dokumentasi dan audit.</div>
+            </div>
+        </div>
+
+        <h2 id="1-2">1.2 Peran Pengguna (Hak Akses)</h2>
+        <p>Aplikasi SiAP memiliki tiga peran (role) utama dengan hak akses yang berbeda-beda:</p>
+
+        <div class="role-box">
+            <div class="role-card role-admin">
+                <div class="r-icon">&#128737;&#65039;</div>
+                <div class="r-name">Administrator</div>
+                <div class="r-desc">Akses penuh ke seluruh fitur: kelola aset, tiket, data master, pengguna, dan ekspor laporan.</div>
+            </div>
+            <div class="role-card role-operator">
+                <div class="r-icon">&#128295;</div>
+                <div class="r-name">Operator</div>
+                <div class="r-desc">Melihat data aset dan membantu proses pengelolaan tiket.</div>
+            </div>
+            <div class="role-card role-user">
+                <div class="r-icon">&#128100;</div>
+                <div class="r-name">User</div>
+                <div class="r-desc">Melihat aset yang dialokasikan, membuat dan memantau tiket kerusakan.</div>
+            </div>
+        </div>
+
+        <h2 id="1-3">1.3 Persyaratan Sistem</h2>
+        <table>
+            <thead>
+                <tr><th>Komponen</th><th>Persyaratan</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Browser</td><td>Google Chrome, Mozilla Firefox, Microsoft Edge (versi terbaru)</td></tr>
+                <tr><td>Koneksi Internet</td><td>Stabil (minimal 1 Mbps)</td></tr>
+                <tr><td>Perangkat</td><td>PC, Laptop, Tablet, atau Smartphone</td></tr>
+                <tr><td>Resolusi Layar</td><td>Minimal 1024 x 768 piksel (disarankan 1366 x 768 atau lebih)</td></tr>
+            </tbody>
+        </table>
+
+        <h2 id="1-4">1.4 Cara Login</h2>
+        <div class="step-box no-break">
+            <div class="step-title"><span class="step-num">1</span> Langkah-langkah Login</div>
+            <ol>
+                <li>Buka browser dan akses alamat web aplikasi SiAP: <strong>https://siap-web.vercel.app</strong></li>
+                <li>Pada halaman login, masukkan <strong>Email</strong> yang telah terdaftar di sistem.</li>
+                <li>Masukkan <strong>Password</strong> Anda.</li>
+                <li>Klik tombol <strong>"Masuk"</strong>.</li>
+                <li>Sistem akan secara otomatis mengarahkan Anda ke <strong>Dashboard</strong> sesuai dengan peran (role) Anda.</li>
+            </ol>
+        </div>
+
+        <div class="alert alert-info">
+            <div class="alert-title">Informasi</div>
+            <p>Akun pengguna dibuat oleh Administrator. Jika Anda belum memiliki akun, silakan hubungi Administrator untuk dibuatkan.</p>
+        </div>
+    </div>
+
+    <!-- BAB 2 -->
+    <div class="chapter" id="bab2">
+        <div class="chapter-header">
+            <div class="chapter-number">Bab 2</div>
+            <div class="chapter-title">Panduan Administrator</div>
+        </div>
+
+        <p>Sebagai Administrator, Anda memiliki akses penuh ke seluruh fitur aplikasi. Bagian ini akan menjelaskan setiap fitur yang tersedia secara detail.</p>
+
+        <h2 id="2-1">2.1 Dashboard Admin</h2>
+        <p>Setelah login, Administrator akan langsung melihat <strong>Dashboard</strong> yang menampilkan ringkasan data penting:</p>
+        <ul>
+            <li><strong>Total Aset Individu</strong> &mdash; Jumlah keseluruhan aset yang tercatat di sistem.</li>
+            <li><strong>Total Aset Unit Kerja</strong> &mdash; Jumlah aset yang dimiliki per unit kerja/divisi.</li>
+            <li><strong>Total Tiket</strong> &mdash; Jumlah laporan kerusakan yang telah masuk.</li>
+            <li><strong>Tiket Menunggu</strong> &mdash; Tiket yang belum ditindaklanjuti dan memerlukan perhatian.</li>
+            <li><strong>Grafik &amp; Statistik</strong> &mdash; Visualisasi data berupa grafik untuk analisis kondisi aset.</li>
+        </ul>
+
+        <hr class="divider">
+
+        <h2 id="2-2">2.2 Manajemen Aset Individu</h2>
+        <p>Fitur ini digunakan untuk mengelola aset yang dialokasikan kepada individu (pengguna tertentu).</p>
+        <p><strong>Akses menu:</strong> <span class="menu-path">Sidebar &rarr; Aset Individu</span></p>
+
+        <h3>A. Melihat Daftar Aset</h3>
+        <p>Halaman ini menampilkan seluruh aset individu dalam bentuk tabel yang dapat dicari dan difilter. Informasi yang ditampilkan meliputi: Kode Aset, Nama Aset, Kategori, Merek, Lokasi, Pengguna, dan Status.</p>
+
+        <h3>B. Menambah Aset Baru</h3>
+        <div class="step-box no-break">
+            <div class="step-title"><span class="step-num">1</span> Langkah-langkah Menambah Aset Individu</div>
+            <ol>
+                <li>Klik tombol <strong>"+ Tambah Aset"</strong> di halaman daftar aset.</li>
+                <li>Isi formulir yang tersedia:
+                    <ul>
+                        <li><strong>Kode Aset</strong> &mdash; Kode unik untuk identifikasi aset.</li>
+                        <li><strong>Nama Aset</strong> &mdash; Nama atau deskripsi aset.</li>
+                        <li><strong>Kategori</strong> &mdash; Pilih kategori aset (misal: Komputer, Printer, dsb).</li>
+                        <li><strong>Merek</strong> &mdash; Pilih merek/brand aset.</li>
+                        <li><strong>Lokasi</strong> &mdash; Pilih lokasi penempatan aset.</li>
+                        <li><strong>Pengguna</strong> &mdash; Pilih pengguna yang akan bertanggung jawab atas aset.</li>
+                        <li><strong>Tanggal Pembelian</strong> &mdash; Tanggal saat aset dibeli.</li>
+                        <li><strong>Harga</strong> &mdash; Harga pembelian aset.</li>
+                        <li><strong>Kondisi</strong> &mdash; Kondisi awal aset (Baik, Rusak Ringan, dsb).</li>
+                        <li><strong>Foto Bukti</strong> &mdash; Unggah foto aset atau dokumen pendukung (format: JPG, PNG, atau PDF).</li>
+                    </ul>
+                </li>
+                <li>Klik tombol <strong>"Simpan"</strong> untuk menyimpan data aset.</li>
+            </ol>
+        </div>
+
+        <h3>C. Mengedit Aset</h3>
+        <div class="step-box no-break">
+            <div class="step-title"><span class="step-num">2</span> Langkah-langkah Mengedit Aset</div>
+            <ol>
+                <li>Pada daftar aset, cari aset yang ingin diedit.</li>
+                <li>Klik ikon <strong>pensil (Edit)</strong> pada baris aset tersebut.</li>
+                <li>Ubah data yang diperlukan pada formulir.</li>
+                <li>Klik <strong>"Perbarui"</strong> untuk menyimpan perubahan.</li>
+            </ol>
+        </div>
+
+        <h3>D. Menghapus Aset</h3>
+        <div class="step-box no-break">
+            <div class="step-title"><span class="step-num">3</span> Langkah-langkah Menghapus Aset</div>
+            <ol>
+                <li>Pada daftar aset, cari aset yang ingin dihapus.</li>
+                <li>Klik ikon <strong>tempat sampah (Hapus)</strong> pada baris aset tersebut.</li>
+                <li>Konfirmasi penghapusan pada dialog yang muncul.</li>
+            </ol>
+        </div>
+
+        <div class="alert alert-warning">
+            <div class="alert-title">Perhatian</div>
+            <p>Aset yang dihapus akan masuk ke <strong>Tempat Sampah (Trash)</strong>. Anda dapat memulihkannya melalui menu <strong>Recovery</strong>, atau menghapusnya secara permanen.</p>
+        </div>
+
+        <hr class="divider">
+
+        <h2 id="2-3">2.3 Manajemen Aset Unit Kerja</h2>
+        <p>Fitur ini digunakan untuk mengelola aset yang dialokasikan kepada unit kerja/divisi (bukan individu).</p>
+        <p><strong>Akses menu:</strong> <span class="menu-path">Sidebar &rarr; Aset Unit Kerja</span></p>
+        <p>Prosedur pengelolaan (tambah, edit, hapus) sama dengan Aset Individu. Perbedaannya terletak pada kolom pengalokasian &mdash; pada Aset Unit Kerja, aset dialokasikan ke <strong>Unit Kerja</strong>, bukan ke pengguna individual.</p>
+
+        <div class="alert alert-info">
+            <div class="alert-title">Informasi</div>
+            <p>Aset Unit Kerja juga memiliki fitur <strong>Status Aset Unit Kerja</strong> tersendiri yang dapat dikonfigurasi oleh Admin melalui menu Data Master.</p>
+        </div>
+
+        <hr class="divider">
+
+        <h2 id="2-4">2.4 Manajemen Tiket (Laporan Kerusakan)</h2>
+        <p>Tiket adalah laporan kerusakan atau permasalahan aset yang diajukan oleh pengguna. Admin bertanggung jawab untuk memproses dan menyelesaikan tiket tersebut.</p>
+        <p><strong>Akses menu:</strong> <span class="menu-path">Sidebar &rarr; Tiket</span></p>
+
+        <h3>A. Melihat Daftar Tiket</h3>
+        <p>Halaman ini menampilkan seluruh tiket dalam bentuk tabel. Setiap tiket menampilkan: Nomor Tiket, Aset Terkait, Pelapor, Prioritas, Status, dan Tanggal Pelaporan.</p>
+
+        <h3>B. Detail Tiket</h3>
+        <p>Klik pada tiket untuk melihat detail lengkap, termasuk:</p>
+        <ul>
+            <li>Informasi aset yang dilaporkan.</li>
+            <li>Deskripsi kerusakan dari pelapor.</li>
+            <li>Foto/PDF bukti kerusakan yang diunggah.</li>
+            <li>Riwayat perubahan status tiket (timeline).</li>
+        </ul>
+
+        <h3>C. Memproses Tiket</h3>
+        <p>Admin dapat melakukan aksi berikut pada tiket:</p>
+
+        <table>
+            <thead>
+                <tr><th>Aksi</th><th>Keterangan</th><th>Status Berubah Menjadi</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Setujui</strong></td>
+                    <td>Menyetujui tiket untuk diproses lebih lanjut.</td>
+                    <td><span class="badge badge-blue">Disetujui</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Tolak</strong></td>
+                    <td>Menolak tiket dengan alasan penolakan.</td>
+                    <td><span class="badge badge-red">Ditolak</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Mulai Pengecekan</strong></td>
+                    <td>Menandai tiket sedang dicek oleh teknisi.</td>
+                    <td><span class="badge badge-yellow">Sedang Dicek</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Selesaikan</strong></td>
+                    <td>Menandai perbaikan selesai. Wajib unggah bukti perbaikan (foto/PDF).</td>
+                    <td><span class="badge badge-green">Selesai</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Tutup</strong></td>
+                    <td>Menutup tiket secara final setelah dikonfirmasi.</td>
+                    <td><span class="badge badge-gray">Ditutup</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Batalkan</strong></td>
+                    <td>Membatalkan tiket.</td>
+                    <td><span class="badge badge-orange">Dibatalkan</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="divider">
+
+        <h2 id="2-5">2.5 Manajemen Data Master</h2>
+        <p>Data Master adalah data referensi dasar yang digunakan oleh fitur-fitur lain di aplikasi. Admin bertanggung jawab untuk mengelola data-data berikut:</p>
+
+        <table>
+            <thead>
+                <tr><th>Data Master</th><th>Keterangan</th><th>Akses Menu</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Unit Kerja</strong></td><td>Daftar divisi/departemen di perusahaan.</td><td><span class="menu-path">Sidebar &rarr; Unit Kerja</span></td></tr>
+                <tr><td><strong>Kategori Aset</strong></td><td>Klasifikasi jenis aset (Komputer, Printer, Mebel, dsb).</td><td><span class="menu-path">Sidebar &rarr; Kategori Aset</span></td></tr>
+                <tr><td><strong>Merek / Brand</strong></td><td>Daftar merek/brand aset.</td><td><span class="menu-path">Sidebar &rarr; Merek</span></td></tr>
+                <tr><td><strong>Lokasi</strong></td><td>Daftar lokasi penempatan aset (gedung, lantai, ruangan).</td><td><span class="menu-path">Sidebar &rarr; Lokasi</span></td></tr>
+                <tr><td><strong>Prioritas Tiket</strong></td><td>Level prioritas tiket (Rendah, Sedang, Tinggi, Kritis).</td><td><span class="menu-path">Sidebar &rarr; Prioritas Tiket</span></td></tr>
+                <tr><td><strong>Alasan Penolakan</strong></td><td>Template alasan saat menolak tiket.</td><td><span class="menu-path">Sidebar &rarr; Alasan Penolakan</span></td></tr>
+                <tr><td><strong>Status Aset Unit Kerja</strong></td><td>Status khusus untuk aset unit kerja.</td><td><span class="menu-path">Sidebar &rarr; Status Aset Unit Kerja</span></td></tr>
+            </tbody>
+        </table>
+
+        <h3>Operasi yang Tersedia pada Data Master</h3>
+        <p>Setiap data master memiliki operasi dasar yang sama:</p>
+        <ul>
+            <li><strong>Lihat Daftar</strong> &mdash; Menampilkan seluruh data dalam tabel.</li>
+            <li><strong>Tambah Baru</strong> &mdash; Menambahkan data baru melalui formulir.</li>
+            <li><strong>Edit</strong> &mdash; Mengubah data yang sudah ada.</li>
+            <li><strong>Aktifkan/Nonaktifkan (Toggle)</strong> &mdash; Menonaktifkan data tanpa menghapusnya. Data yang dinonaktifkan tidak akan muncul di pilihan dropdown.</li>
+        </ul>
+
+        <hr class="divider">
+
+        <h2 id="2-6">2.6 Manajemen Pengguna</h2>
+        <p>Admin dapat mengelola seluruh akun pengguna yang terdaftar di sistem.</p>
+        <p><strong>Akses menu:</strong> <span class="menu-path">Sidebar &rarr; Pengguna</span></p>
+
+        <h3>A. Menambah Pengguna Baru</h3>
+        <div class="step-box no-break">
+            <div class="step-title"><span class="step-num">1</span> Langkah-langkah Menambah Pengguna</div>
+            <ol>
+                <li>Klik tombol <strong>"+ Tambah Pengguna"</strong>.</li>
+                <li>Isi formulir:
+                    <ul>
+                        <li><strong>Nama Lengkap</strong> &mdash; Nama pengguna.</li>
+                        <li><strong>Email</strong> &mdash; Alamat email (digunakan untuk login).</li>
+                        <li><strong>Password</strong> &mdash; Kata sandi awal.</li>
+                        <li><strong>Role</strong> &mdash; Pilih peran: Admin, Operator, atau User.</li>
+                    </ul>
+                </li>
+                <li>Klik <strong>"Simpan"</strong>.</li>
+            </ol>
+        </div>
+
+        <h3>B. Mengedit &amp; Menghapus Pengguna</h3>
+        <p>Gunakan ikon <strong>pensil</strong> untuk mengedit data pengguna atau ikon <strong>tempat sampah</strong> untuk menghapusnya dari sistem.</p>
+
+        <h3>C. Ekspor Data Pengguna</h3>
+        <p>Data pengguna dapat diekspor dalam format <strong>CSV</strong> atau <strong>PDF</strong> melalui tombol ekspor di halaman daftar pengguna.</p>
+
+        <hr class="divider">
+
+        <h2 id="2-7">2.7 Pemulihan Data (Recovery)</h2>
+        <p>Fitur ini menampilkan seluruh data yang telah dihapus (Trash) dan memungkinkan Admin untuk:</p>
+        <p><strong>Akses menu:</strong> <span class="menu-path">Sidebar &rarr; Pemulihan Data</span></p>
+        <ul>
+            <li><strong>Pulihkan (Restore)</strong> &mdash; Mengembalikan data yang terhapus ke daftar aktif.</li>
+            <li><strong>Hapus Permanen</strong> &mdash; Menghapus data secara permanen dari sistem (tidak dapat dikembalikan).</li>
+        </ul>
+
+        <div class="alert alert-warning">
+            <div class="alert-title">Peringatan</div>
+            <p><strong>Hapus Permanen</strong> bersifat final dan tidak dapat dibatalkan. Pastikan Anda yakin sebelum menghapus data secara permanen. Data yang memiliki relasi dengan data lain (misalnya aset yang masih memiliki tiket aktif) tidak dapat dihapus permanen.</p>
+        </div>
+
+        <hr class="divider">
+
+        <h2 id="2-8">2.8 Ekspor Data (CSV &amp; PDF)</h2>
+        <p>Hampir seluruh halaman daftar data di SiAP menyediakan fitur ekspor dalam dua format:</p>
+        <table>
+            <thead>
+                <tr><th>Format</th><th>Keterangan</th><th>Kegunaan</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>CSV</strong></td><td>Comma-Separated Values (dapat dibuka di Excel)</td><td>Analisis data, pengolahan lebih lanjut</td></tr>
+                <tr><td><strong>PDF</strong></td><td>Portable Document Format</td><td>Cetak laporan, dokumentasi resmi</td></tr>
+            </tbody>
+        </table>
+
+        <div class="alert alert-tip">
+            <div class="alert-title">Tips</div>
+            <p>Untuk aset individu dan aset unit kerja, tersedia juga fitur <strong>Ekspor Single</strong> yang memungkinkan Anda mengekspor data satu aset saja secara detail.</p>
+        </div>
+    </div>
+
+    <!-- BAB 3 -->
+    <div class="chapter" id="bab3">
+        <div class="chapter-header">
+            <div class="chapter-number">Bab 3</div>
+            <div class="chapter-title">Panduan Operator</div>
+        </div>
+
+        <p>Operator adalah peran pendukung yang membantu dalam pengelolaan aset dan tiket. Operator memiliki akses yang lebih terbatas dibandingkan Administrator.</p>
+
+        <h2 id="3-1">3.1 Dashboard Operator</h2>
+        <p>Setelah login, Operator akan diarahkan ke <strong>Dashboard Operator</strong> yang menampilkan:</p>
+        <ul>
+            <li>Ringkasan jumlah aset yang dikelola.</li>
+            <li>Daftar tiket terbaru yang perlu diperhatikan.</li>
+            <li>Statistik umum kondisi aset.</li>
+        </ul>
+
+        <h2 id="3-2">3.2 Melihat dan Mengelola Aset</h2>
+        <p>Operator dapat:</p>
+        <ul>
+            <li>Melihat daftar seluruh aset individu dan aset unit kerja.</li>
+            <li>Membuat tiket laporan kerusakan.</li>
+            <li>Melihat detail dan status tiket.</li>
+        </ul>
+
+        <div class="alert alert-info">
+            <div class="alert-title">Informasi</div>
+            <p>Operator <strong>tidak</strong> dapat menambah, mengedit, atau menghapus data aset, data master, maupun akun pengguna. Hak akses tersebut hanya dimiliki oleh Administrator.</p>
+        </div>
+    </div>
+
+    <!-- BAB 4 -->
+    <div class="chapter" id="bab4">
+        <div class="chapter-header">
+            <div class="chapter-number">Bab 4</div>
+            <div class="chapter-title">Panduan Pengguna (User)</div>
+        </div>
+
+        <p>Sebagai pengguna (User), Anda dapat melihat aset yang dialokasikan kepada Anda dan membuat laporan kerusakan apabila aset mengalami masalah.</p>
+
+        <h2 id="4-1">4.1 Dashboard User</h2>
+        <p>Setelah login, Anda akan diarahkan ke <strong>Dashboard User</strong> yang menampilkan:</p>
+        <ul>
+            <li><strong>Daftar Aset Anda</strong> &mdash; Seluruh aset yang saat ini dialokasikan kepada Anda.</li>
+            <li><strong>Ringkasan Tiket</strong> &mdash; Jumlah tiket yang Anda buat beserta statusnya.</li>
+            <li><strong>Pemberitahuan</strong> &mdash; Informasi terbaru terkait tiket Anda.</li>
+        </ul>
+
+        <h2 id="4-2">4.2 Melihat Aset Saya</h2>
+        <p><strong>Akses menu:</strong> <span class="menu-path">Sidebar &rarr; Aset Saya</span></p>
+        <p>Halaman ini menampilkan seluruh aset yang sedang Anda gunakan. Untuk setiap aset, Anda dapat melihat detail seperti kode aset, nama, kategori, lokasi, dan kondisi.</p>
+
+        <div class="alert alert-tip">
+            <div class="alert-title">Tips</div>
+            <p>Jika Anda menemukan aset yang bermasalah, Anda dapat langsung klik tombol <strong>"Laporkan Kerusakan"</strong> pada aset tersebut. Sistem akan otomatis mengisi informasi aset ke dalam formulir tiket.</p>
+        </div>
+
+        <h2 id="4-3">4.3 Melaporkan Kerusakan (Membuat Tiket)</h2>
+
+        <h3>Cara 1: Dari Halaman Aset (Direkomendasikan)</h3>
+        <div class="step-box no-break">
+            <div class="step-title"><span class="step-num">1</span> Laporkan Kerusakan dari Aset</div>
+            <ol>
+                <li>Buka halaman <strong>Aset Saya</strong>.</li>
+                <li>Pada aset yang bermasalah, klik tombol <strong>"Laporkan Kerusakan"</strong>.</li>
+                <li>Sistem akan otomatis membuka formulir tiket dengan <strong>aset yang sudah terpilih</strong>.</li>
+                <li>Isi detail kerusakan:
+                    <ul>
+                        <li><strong>Judul</strong> &mdash; Ringkasan singkat masalah (misal: "Monitor mati total").</li>
+                        <li><strong>Deskripsi</strong> &mdash; Penjelasan detail tentang kerusakan.</li>
+                        <li><strong>Prioritas</strong> &mdash; Pilih tingkat urgensi.</li>
+                        <li><strong>Foto / PDF Bukti</strong> &mdash; Unggah foto kerusakan atau dokumen pendukung.</li>
+                    </ul>
+                </li>
+                <li>Klik <strong>"Kirim Laporan"</strong>.</li>
+            </ol>
+        </div>
+
+        <h3>Cara 2: Dari Menu Tiket</h3>
+        <div class="step-box no-break">
+            <div class="step-title"><span class="step-num">2</span> Buat Tiket Baru dari Menu Tiket</div>
+            <ol>
+                <li>Klik <span class="menu-path">Sidebar &rarr; Tiket</span>.</li>
+                <li>Klik tombol <strong>"+ Tambah Tiket Baru"</strong>.</li>
+                <li>Pada kolom <strong>"Pilih Aset"</strong>, pilih aset yang mengalami masalah dari dropdown. Dropdown ini menampilkan seluruh aset yang dialokasikan kepada Anda.</li>
+                <li>Isi detail kerusakan dan unggah bukti.</li>
+                <li>Klik <strong>"Kirim Laporan"</strong>.</li>
+            </ol>
+        </div>
+
+        <h2 id="4-4">4.4 Memantau Status Perbaikan</h2>
+        <p>Setelah tiket dibuat, Anda dapat memantau perkembangan perbaikan melalui:</p>
+        <p><strong>Akses menu:</strong> <span class="menu-path">Sidebar &rarr; Tiket</span></p>
+        <p>Pada halaman daftar tiket, Anda akan melihat status terkini dari setiap tiket yang pernah Anda buat. Klik pada tiket untuk melihat detail dan riwayat perubahan status secara lengkap.</p>
+
+        <div class="alert alert-success">
+            <div class="alert-title">Informasi</div>
+            <p>Ketika Admin menyelesaikan perbaikan, bukti perbaikan (foto/PDF) akan ditampilkan di halaman detail tiket. Anda dapat mengunduhnya dengan mengklik gambar atau link PDF tersebut.</p>
+        </div>
+    </div>
+
+    <!-- BAB 5 -->
+    <div class="chapter" id="bab5">
+        <div class="chapter-header">
+            <div class="chapter-number">Bab 5</div>
+            <div class="chapter-title">Alur Tiket (Ticket Lifecycle)</div>
+        </div>
+
+        <p>Berikut adalah alur hidup (lifecycle) sebuah tiket dari awal hingga akhir:</p>
+
+        <div class="flow-diagram">
+            <div class="flow-item badge-yellow">Menunggu</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-item badge-blue">Disetujui</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-item badge-purple">Sedang Dicek</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-item badge-green">Selesai</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-item badge-gray">Ditutup</div>
+        </div>
+
+        <p>Selain alur utama di atas, terdapat juga alur alternatif:</p>
+
+        <table>
+            <thead>
+                <tr><th>Status</th><th>Pelaku</th><th>Keterangan</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="badge badge-yellow">Menunggu</span></td><td>User</td><td>Tiket baru saja dibuat oleh pengguna dan menunggu peninjauan oleh Admin.</td></tr>
+                <tr><td><span class="badge badge-blue">Disetujui</span></td><td>Admin</td><td>Admin menyetujui tiket dan akan memproses lebih lanjut.</td></tr>
+                <tr><td><span class="badge badge-red">Ditolak</span></td><td>Admin</td><td>Admin menolak tiket disertai alasan penolakan.</td></tr>
+                <tr><td><span class="badge badge-purple">Sedang Dicek</span></td><td>Admin</td><td>Teknisi sedang melakukan pengecekan dan perbaikan aset.</td></tr>
+                <tr><td><span class="badge badge-green">Selesai</span></td><td>Admin</td><td>Perbaikan selesai. Admin mengunggah bukti perbaikan.</td></tr>
+                <tr><td><span class="badge badge-gray">Ditutup</span></td><td>Admin</td><td>Tiket ditutup secara final setelah semua proses selesai.</td></tr>
+                <tr><td><span class="badge badge-orange">Dibatalkan</span></td><td>Admin / User</td><td>Tiket dibatalkan karena alasan tertentu.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- BAB 6 -->
+    <div class="chapter" id="bab6">
+        <div class="chapter-header">
+            <div class="chapter-number">Bab 6</div>
+            <div class="chapter-title">Troubleshooting (Penanganan Masalah)</div>
+        </div>
+
+        <p>Berikut adalah beberapa permasalahan umum yang mungkin Anda temui beserta solusinya:</p>
+
+        <div class="step-box no-break">
+            <div class="step-title">Tidak bisa login</div>
+            <ul>
+                <li>Pastikan email dan password yang Anda masukkan sudah benar (perhatikan huruf besar/kecil).</li>
+                <li>Coba refresh halaman browser Anda (tekan <strong>Ctrl + F5</strong>).</li>
+                <li>Jika masih gagal, hubungi Administrator untuk mereset password Anda.</li>
+            </ul>
+        </div>
+
+        <div class="step-box no-break">
+            <div class="step-title">File PDF tidak bisa dibuka / "Failed to load PDF"</div>
+            <ul>
+                <li>Pastikan koneksi internet Anda stabil.</li>
+                <li>Coba buka file PDF di tab baru (klik kanan &rarr; <strong>"Open link in new tab"</strong>).</li>
+                <li>Gunakan browser <strong>Google Chrome</strong> versi terbaru untuk hasil terbaik.</li>
+                <li>Jika masih bermasalah, coba unduh file PDF terlebih dahulu sebelum membukanya.</li>
+            </ul>
+        </div>
+
+        <div class="step-box no-break">
+            <div class="step-title">Aset tidak muncul di halaman User</div>
+            <ul>
+                <li>Pastikan Administrator sudah mengalokasikan aset kepada akun Anda.</li>
+                <li>Periksa apakah aset tersebut berstatus <strong>Aktif</strong> (bukan Disposed/Dibuang).</li>
+                <li>Coba refresh halaman atau logout lalu login kembali.</li>
+            </ul>
+        </div>
+
+        <div class="step-box no-break">
+            <div class="step-title">Gagal mengunggah file saat membuat tiket</div>
+            <ul>
+                <li>Pastikan ukuran file tidak melebihi batas maksimum (<strong>10 MB</strong>).</li>
+                <li>Pastikan format file yang diunggah sesuai (<strong>JPG, PNG, atau PDF</strong>).</li>
+                <li>Jika menggunakan kamera ponsel, pastikan resolusi foto tidak terlalu besar.</li>
+            </ul>
+        </div>
+
+        <div class="step-box no-break">
+            <div class="step-title">Halaman tampil error / "500 Server Error"</div>
+            <ul>
+                <li>Coba refresh halaman (tekan <strong>Ctrl + F5</strong>).</li>
+                <li>Jika masih error, tunggu beberapa saat dan coba lagi.</li>
+                <li>Laporkan masalah ini ke Administrator dengan menyertakan tangkapan layar error.</li>
+            </ul>
+        </div>
+
+        <div class="step-box no-break">
+            <div class="step-title">Tidak bisa menghapus data (error saat hapus permanen)</div>
+            <ul>
+                <li>Data tidak bisa dihapus permanen jika masih memiliki <strong>relasi</strong> dengan data lain.</li>
+                <li>Contoh: Aset yang masih memiliki tiket aktif tidak dapat dihapus.</li>
+                <li>Hapus atau selesaikan data terkait terlebih dahulu sebelum menghapus data utama.</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="alert alert-info" style="margin-top: 30px;">
+            <div class="alert-title">Kontak Bantuan</div>
+            <p>Jika Anda mengalami kendala yang tidak tercantum di atas, silakan hubungi tim Administrator melalui:<br>
+            <strong>Email:</strong> admin@siap.co.id<br>
+            <strong>Telepon:</strong> Ext. 1234</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 60px; padding: 30px; color: var(--text-muted); font-size: 10pt;">
+            <p><strong>SiAP &mdash; Sistem Informasi Aset Perusahaan</strong></p>
+            <p>Versi 1.0 | September 2026</p>
+            <p style="margin-top: 5px; font-size: 9pt;">&copy; 2026 PT Pupuk Kalimantan Timur. Seluruh hak cipta dilindungi.</p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -29,6 +29,17 @@
 
 ---
 
+## 📖 Buku Panduan (User Manual)
+
+Buku panduan lengkap (HTML/PDF) untuk mempelajari cara penggunaan aplikasi ini dari sisi Admin, Operator, dan User telah disertakan di dalam *repository* ini.
+
+Anda dapat mengakses buku panduan dengan cara:
+1. Membuka URL berikut di browser Anda (Live): [siap-web.vercel.app/panduan.html](https://siap-web.vercel.app/panduan.html)
+2. Atau membuka file `public/panduan.html` di komputer Anda secara lokal.
+3. Anda dapat langsung menekan **Ctrl + P** di browser untuk menyimpannya sebagai file **PDF**.
+
+---
+
 ## ✨ Fitur Utama
 
 | Fitur | Keterangan |
@@ -272,36 +283,38 @@ php artisan migrate
 
 ---
 
-## 💻 Menjalankan di Localhost (Development)
+## 💻 Menjalankan di Localhost (Untuk Penyerahan PT Pupuk Kaltim)
 
-### Prasyarat
+Bagian ini ditujukan bagi tim IT internal PT Pupuk Kaltim yang ingin menjalankan aplikasi secara lokal di server *on-premise* perusahaan atau PC *development*.
 
-Pastikan sudah terinstall:
-- [XAMPP](https://www.apachefriends.org/) v8.2+ (dengan MySQL aktif)
-- [Composer](https://getcomposer.org/)
-- [Node.js 18+](https://nodejs.org/) & NPM
+### Prasyarat Sistem
 
-### Langkah Instalasi
+Pastikan server/PC Anda sudah terinstall:
+- [XAMPP](https://www.apachefriends.org/) v8.2+ (dengan modul Apache dan MySQL aktif)
+- [Composer](https://getcomposer.org/) (Package manager PHP)
+- [Node.js 18+](https://nodejs.org/) & NPM (Untuk *bundling* aset *frontend*)
 
-**1. Clone repository**
+### Langkah Instalasi & Konfigurasi
+
+**1. Unduh (Clone) Repository**
 ```bash
 git clone https://github.com/andann15/SiAP-Adkor.git
 cd SiAP-Adkor
 ```
 
-> 💡 Repository ini sebelumnya bernama `AssetOps-web` dan telah dimigrasi menjadi `SiAP-Adkor`.
-
-**2. Install dependensi PHP**
+**2. Install Dependensi Backend (PHP)**
 ```bash
 composer install
 ```
 
-**3. Install dependensi JavaScript**
+**3. Install & Build Dependensi Frontend (JavaScript/CSS)**
 ```bash
 npm install
+npm run build
 ```
+> *Catatan: `npm run build` akan mengompilasi semua *file* Tailwind CSS dan JavaScript ke dalam folder `public/build`. Langkah ini **wajib** dilakukan agar tampilan web muncul dengan benar (tidak berantakan) saat dijalankan.*
 
-**4. Salin file konfigurasi**
+**4. Siapkan File Konfigurasi Lingkungan (.env)**
 ```bash
 # Windows
 copy .env.example .env
@@ -310,62 +323,54 @@ copy .env.example .env
 cp .env.example .env
 ```
 
-**5. Generate application key**
+**5. Hasilkan Kunci Keamanan (Application Key)**
 ```bash
 php artisan key:generate
 ```
 
-**6. Konfigurasi database di `.env`**
-
-Edit file `.env`, sesuaikan bagian berikut:
+**6. Konfigurasi Database Lokal di `.env`**
+Buka file `.env` menggunakan *text editor* (Notepad/VSCode), lalu sesuaikan bagian database:
 ```env
 APP_NAME=SIAP
 APP_ENV=local
-APP_KEY=        # Diisi otomatis oleh key:generate
+APP_KEY=        # (Sudah terisi otomatis dari langkah 5)
 APP_DEBUG=true
 APP_URL=http://localhost:8000
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=siap
+DB_DATABASE=siap_lokal
 DB_USERNAME=root
 DB_PASSWORD=
-
-SESSION_DRIVER=file
-CACHE_STORE=file
-FILESYSTEM_DISK=local
 ```
 
-**7. Buat database di phpMyAdmin**
-- Nyalakan **Apache** dan **MySQL** di XAMPP Control Panel
-- Buka `http://localhost/phpmyadmin`
-- Buat database baru bernama `siap`
+**7. Buat Database MySQL**
+- Pastikan modul **Apache** dan **MySQL** di XAMPP berstatus aktif (berwarna hijau).
+- Buka browser dan akses `http://localhost/phpmyadmin`.
+- Buat database baru dengan nama `siap_lokal`.
 
-**8. Jalankan migrasi & seeder**
+**8. Migrasi Tabel & Masukkan Data Awal (Seeder)**
+Langkah ini akan membangun seluruh struktur tabel dan membuat akun *default* (Admin, Operator, User).
 ```bash
 php artisan migrate --seed
 ```
 
-**9. Jalankan aplikasi**
-
-Buka **dua terminal** secara bersamaan:
-
+**9. Konfigurasi Penyimpanan File (Foto/PDF)**
+Agar foto bukti kerusakan atau file PDF laporan dapat disimpan di hardisk komputer/server lokal, jalankan perintah ini untuk membuat *symbolic link*:
 ```bash
-# Terminal 1 — Laravel Development Server
+php artisan storage:link
+```
+*(Pastikan di `.env`, nilai `FILESYSTEM_DISK=local`)*
+
+**10. Jalankan Aplikasi**
+Buka terminal dan jalankan server lokal bawaan Laravel:
+```bash
 php artisan serve
 ```
 
-```bash
-# Terminal 2 — Vite (Hot Reload CSS/JS)
-npm run dev
-```
-
-**10. Buka di browser**
-
-```
-http://127.0.0.1:8000
-```
+Aplikasi sekarang sudah berjalan! Silakan akses melalui browser di alamat:
+**[http://127.0.0.1:8000](http://127.0.0.1:8000)**
 
 ---
 
