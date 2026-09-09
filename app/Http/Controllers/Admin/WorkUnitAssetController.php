@@ -51,11 +51,11 @@ class WorkUnitAssetController extends Controller
         $workUnits = \App\Models\WorkUnit::with('department.compartment')
                         ->where('is_active', true)
                         ->get()
-                        ->sortBy([
-                            fn($a, $b) => strcmp($a->department?->compartment?->name ?? '', $b->department?->compartment?->name ?? ''),
-                            fn($a, $b) => strcmp($a->department?->name ?? '', $b->department?->name ?? ''),
-                            fn($a, $b) => strcmp($a->name ?? '', $b->name ?? ''),
-                        ])
+                        ->sort(function ($a, $b) {
+                            if ($c = strcmp($a->department?->compartment?->name ?? '', $b->department?->compartment?->name ?? '')) return $c;
+                            if ($c = strcmp($a->department?->name ?? '', $b->department?->name ?? '')) return $c;
+                            return strcmp($a->name ?? '', $b->name ?? '');
+                        })
                         ->values();
         $locations = Location::orderBy('name')->get();
 
@@ -134,11 +134,11 @@ class WorkUnitAssetController extends Controller
             'workUnits'  => WorkUnit::with('department.compartment')
                                 ->where('is_active', true)
                                 ->get()
-                                ->sortBy([
-                                    fn($a, $b) => strcmp($a->department?->compartment?->name ?? '', $b->department?->compartment?->name ?? ''),
-                                    fn($a, $b) => strcmp($a->department?->name ?? '', $b->department?->name ?? ''),
-                                    fn($a, $b) => strcmp($a->name ?? '', $b->name ?? ''),
-                                ])
+                                ->sort(function ($a, $b) {
+                                    if ($c = strcmp($a->department?->compartment?->name ?? '', $b->department?->compartment?->name ?? '')) return $c;
+                                    if ($c = strcmp($a->department?->name ?? '', $b->department?->name ?? '')) return $c;
+                                    return strcmp($a->name ?? '', $b->name ?? '');
+                                })
                                 ->values(),
             'statuses'   => WorkUnitAssetStatus::where('is_active', true)
                                 ->orderBy('order')->orderBy('name')
