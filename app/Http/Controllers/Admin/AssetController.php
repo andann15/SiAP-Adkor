@@ -209,7 +209,7 @@ class AssetController extends Controller
             "Expires"             => "0"
         ];
 
-        $columns = ['Kode', 'Nama', 'Kategori', 'Merek', 'Lokasi', 'Status', 'Pengguna'];
+        $columns = ['Kode', 'Nama', 'Kategori', 'Merek', 'Model', 'Lokasi', 'Status', 'Pengguna'];
 
         $callback = function() use($assets, $columns) {
             $statuses = WorkUnitAssetStatus::all()->keyBy('slug');
@@ -217,12 +217,13 @@ class AssetController extends Controller
             fputs($file, "\xEF\xBB\xBF");
             fputcsv($file, $columns, ';');
             foreach ($assets as $asset) {
-                $statusName = $statuses[$asset->status]->name ?? $asset->status;
+                $statusName = $statuses[$asset->status]?->name ?? $asset->status;
                 fputcsv($file, [
                     $asset->code,
                     $asset->name,
                     $asset->category->name ?? '-',
                     $asset->brand->name ?? '-',
+                    $asset->model ?? '-',
                     $asset->location->name ?? '-',
                     $statusName,
                     $asset->currentUser?->name ?? '-',

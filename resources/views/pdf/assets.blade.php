@@ -26,6 +26,8 @@
                 <th>Nama Aset</th>
                 <th>Kategori</th>
                 <th>Merek</th>
+                <th>Model</th>
+                <th>Pengguna</th>
                 <th>Lokasi</th>
                 <th>Status</th>
             </tr>
@@ -38,8 +40,10 @@
                 <td>{{ $asset->name }}</td>
                 <td>{{ $asset->category->name ?? '-' }}</td>
                 <td>{{ $asset->brand->name ?? '-' }}</td>
+                <td>{{ $asset->model ?? '-' }}</td>
+                <td>{{ $asset->currentUser?->name ?? '-' }}</td>
                 <td>{{ $asset->location->name ?? '-' }}</td>
-                <td>{{ $statuses[$asset->status] ?? $asset->status }}</td>
+                <td>{{ $statuses[$asset->status]?->name ?? $asset->status }}</td>
             </tr>
             @endforeach
         </tbody>
