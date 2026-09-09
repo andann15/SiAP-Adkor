@@ -128,21 +128,11 @@ class TicketController extends Controller
         ]);
 
         $file = $request->file('photo');
-        $extension = $file->extension();
-        $isPdf = strtolower($extension) === 'pdf';
-        
-        $uploadOptions = [
+        $uploadResult = cloudinary()->uploadApi()->upload($file->getRealPath(), [
             'folder'        => 'siap/tickets/reports',
-            'resource_type' => $isPdf ? 'raw' : 'image',
-        ];
-        
-        if ($isPdf) {
-            $uploadOptions['public_id'] = uniqid('report_') . '.pdf';
-        } else {
-            $uploadOptions['format'] = $extension;
-        }
-
-        $uploadResult = cloudinary()->uploadApi()->upload($file->getRealPath(), $uploadOptions);
+            'resource_type' => 'image',
+            'format'        => $file->extension(),
+        ]);
         $photoUrl = $uploadResult['secure_url'];
 
         $ticket = new Ticket([
@@ -221,21 +211,11 @@ class TicketController extends Controller
         ]);
 
         $file = $request->file('proof_photo');
-        $extension = $file->extension();
-        $isPdf = strtolower($extension) === 'pdf';
-
-        $uploadOptions = [
+        $uploadResult = cloudinary()->uploadApi()->upload($file->getRealPath(), [
             'folder'        => 'siap/tickets/proofs',
-            'resource_type' => $isPdf ? 'raw' : 'image',
-        ];
-        
-        if ($isPdf) {
-            $uploadOptions['public_id'] = uniqid('proof_') . '.pdf';
-        } else {
-            $uploadOptions['format'] = $extension;
-        }
-
-        $uploadResult = cloudinary()->uploadApi()->upload($file->getRealPath(), $uploadOptions);
+            'resource_type' => 'image',
+            'format'        => $file->extension(),
+        ]);
         $proofUrl = $uploadResult['secure_url'];
 
         $this->stateMachine->transitionTo($ticket, 'completed', $request->user(), [
