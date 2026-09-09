@@ -127,9 +127,11 @@ class TicketController extends Controller
             'photo'       => ['required', 'file', 'mimes:jpeg,png,jpg,webp,heic,pdf', 'max:8192'],
         ]);
 
-        $uploadResult = cloudinary()->uploadApi()->upload($request->file('photo')->getRealPath(), [
+        $file = $request->file('photo');
+        $uploadResult = cloudinary()->uploadApi()->upload($file->getRealPath(), [
             'folder'        => 'siap/tickets/reports',
             'resource_type' => 'auto',
+            'format'        => $file->extension(),
         ]);
         $photoUrl = $uploadResult['secure_url'];
 
@@ -208,9 +210,11 @@ class TicketController extends Controller
             'proof_photo' => ['required', 'file', 'mimes:jpeg,png,jpg,webp,heic,pdf', 'max:8192'],
         ]);
 
-        $uploadResult = cloudinary()->uploadApi()->upload($request->file('proof_photo')->getRealPath(), [
+        $file = $request->file('proof_photo');
+        $uploadResult = cloudinary()->uploadApi()->upload($file->getRealPath(), [
             'folder'        => 'siap/tickets/proofs',
             'resource_type' => 'auto',
+            'format'        => $file->extension(),
         ]);
         $proofUrl = $uploadResult['secure_url'];
 
