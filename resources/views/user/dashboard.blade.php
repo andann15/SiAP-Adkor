@@ -76,7 +76,7 @@
                                         <p class="text-sm text-gray-500">{{ $asset->code }}</p>
                                     </div>
                                     <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-50 text-blue-600 border border-blue-100">
-                                        {{ $asset->category->name }}
+                                        {{ $asset->category->name ?? '-' }}
                                     </span>
                                 </div>
                                 
@@ -128,7 +128,7 @@
                                         {{ \App\Http\Controllers\UserDashboardController::STATUS_LABELS[$ticket->status] ?? $ticket->status }}
                                     </span>
                                 </div>
-                                <p class="text-sm text-gray-600 truncate">{{ $ticket->asset->name }}</p>
+                                <p class="text-sm text-gray-600 truncate">{{ $ticket->asset->name ?? 'Aset tidak ditemukan' }}</p>
                                 <p class="text-xs text-gray-400 mt-1">{{ $ticket->created_at->diffForHumans() }}</p>
                             </a>
                         @empty

@@ -20,7 +20,7 @@
             <div class="bg-white overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:rounded-lg p-6">
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h3 class="text-lg font-medium">{{ $ticket->asset->name }} ({{ $ticket->asset->code }})</h3>
+                        <h3 class="text-lg font-medium">{{ $ticket->asset->name ?? 'Aset tidak ditemukan' }} ({{ $ticket->asset->code ?? '-' }})</h3>
                         <p class="text-sm text-gray-500 mt-1">
                             Dibuat pada {{ $ticket->created_at->format('d M Y H:i') }}
                         </p>
@@ -32,7 +32,7 @@
                     <div>
                         <dt class="text-gray-500">Pembuat Tiket</dt>
                         <dd class="font-medium text-gray-900">{{ $ticket->creator->name ?? '-' }}</dd>
-                        <dd class="text-xs text-gray-500">{{ $ticket->creator->division->name ?? 'Tanpa Divisi' }}</dd>
+                        <dd class="text-xs text-gray-500">{{ $ticket->creator?->division?->name ?? 'Tanpa Divisi' }}</dd>
                     </div>
                     <div>
                         <dt class="text-gray-500">Prioritas</dt>
@@ -57,15 +57,31 @@
                     <dd>{{ $ticket->description }}</dd>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <p class="text-sm text-gray-500 mb-1">Foto Laporan Awal</p>
-                        <img src="{{ $ticket->photo_url }}" class="rounded border max-h-48" alt="Foto Laporan">
+                        <p class="text-sm text-gray-500 mb-1">Bukti Laporan Awal</p>
+                        @php $ext = pathinfo(parse_url($ticket->photo_url, PHP_URL_PATH), PATHINFO_EXTENSION); @endphp
+                        @if(strtolower($ext) === 'pdf')
+                            <a href="{{ $ticket->photo_url }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M4 18h12V8l-4-4H4v14z" opacity=".3"/><path d="M9 13H7v-1h2v1zm4 0h-2v-1h2v1zm-4-3H7V9h2v1zm4 0h-2V9h2v1zM8 4H4v14h12V8l-4-4zm6 13H6V5h5v3h3v9z"/></svg>
+                                Lihat PDF Laporan
+                            </a>
+                        @else
+                            <img src="{{ $ticket->photo_url }}" class="rounded border max-h-48 object-contain" alt="Foto Laporan">
+                        @endif
                     </div>
                     @if ($ticket->proof_photo_url)
                         <div>
-                            <p class="text-sm text-gray-500 mb-1">Foto Bukti Perbaikan</p>
-                            <img src="{{ $ticket->proof_photo_url }}" class="rounded border max-h-48" alt="Foto Bukti">
+                            <p class="text-sm text-gray-500 mb-1">Bukti Perbaikan</p>
+                            @php $extProof = pathinfo(parse_url($ticket->proof_photo_url, PHP_URL_PATH), PATHINFO_EXTENSION); @endphp
+                            @if(strtolower($extProof) === 'pdf')
+                                <a href="{{ $ticket->proof_photo_url }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-700 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M4 18h12V8l-4-4H4v14z" opacity=".3"/><path d="M9 13H7v-1h2v1zm4 0h-2v-1h2v1zm-4-3H7V9h2v1zm4 0h-2V9h2v1zM8 4H4v14h12V8l-4-4zm6 13H6V5h5v3h3v9z"/></svg>
+                                    Lihat PDF Bukti Perbaikan
+                                </a>
+                            @else
+                                <img src="{{ $ticket->proof_photo_url }}" class="rounded border max-h-48 object-contain" alt="Foto Bukti">
+                            @endif
                         </div>
                     @endif
                 </div>
@@ -133,8 +149,8 @@
                             @csrf
                             @method('PATCH')
                             <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700">Foto Bukti Perbaikan</label>
-                                <input type="file" name="proof_photo" id="proof_photo" accept="image/*" class="mt-1 block w-full">
+                                <label class="block text-sm font-medium text-gray-700">Bukti Perbaikan (Foto / PDF)</label>
+                                <input type="file" name="proof_photo" id="proof_photo" accept="image/*,.pdf" class="mt-1 block w-full">
                                 @error('proof_photo')
                                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                                 @enderror
