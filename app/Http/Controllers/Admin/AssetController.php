@@ -20,7 +20,7 @@ class AssetController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Asset::with(['category', 'brand', 'location', 'user'])->whereNull('work_unit_id');
+        $query = Asset::with(['category', 'brand', 'location', 'currentUser'])->whereNull('work_unit_id');
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -31,7 +31,7 @@ class AssetController extends Controller
                   ->orWhereHas('category', function ($q) use ($search) {
                       $q->where('name', 'like', "%{$search}%");
                   })
-                  ->orWhereHas('user', function ($q) use ($search) {
+                  ->orWhereHas('currentUser', function ($q) use ($search) {
                       $q->where('name', 'like', "%{$search}%");
                   });
             });
@@ -187,7 +187,7 @@ class AssetController extends Controller
 
     public function exportCsv(Request $request)
     {
-        $query = Asset::with(['category', 'brand', 'location', 'user'])->whereNull('work_unit_id');
+        $query = Asset::with(['category', 'brand', 'location', 'currentUser'])->whereNull('work_unit_id');
 
         if ($request->filled('search')) {
             $s = $request->search;
@@ -225,7 +225,7 @@ class AssetController extends Controller
                     $asset->brand->name ?? '-',
                     $asset->location->name ?? '-',
                     $statusName,
-                    $asset->user?->name ?? '-',
+                    $asset->currentUser?->name ?? '-',
                 ], ';');
             }
             fclose($file);
@@ -236,7 +236,7 @@ class AssetController extends Controller
 
     public function exportPdf(Request $request)
     {
-        $query = Asset::with(['category', 'brand', 'location', 'user'])->whereNull('work_unit_id');
+        $query = Asset::with(['category', 'brand', 'location', 'currentUser'])->whereNull('work_unit_id');
 
         if ($request->filled('search')) {
             $s = $request->search;
