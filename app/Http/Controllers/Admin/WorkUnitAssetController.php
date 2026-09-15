@@ -142,7 +142,7 @@ class WorkUnitAssetController extends Controller
                                 ->values(),
             'statuses'   => WorkUnitAssetStatus::where('is_active', true)
                                 ->orderBy('order')->orderBy('name')
-                                ->pluck('name', 'slug'),
+                                ->get(),
         ];
     }
 

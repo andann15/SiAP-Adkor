@@ -114,9 +114,13 @@
         <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
         <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <option value="">-- Pilih Status --</option>
-            @foreach ($statuses as $status)
-                <option value="{{ $status->slug }}" @selected(old('status', $asset->status ?? '') == $status->slug)>
-                    {{ $status->name }}
+            @foreach ($statuses as $key => $status)
+                @php
+                    $val = is_object($status) ? $status->slug : $key;
+                    $lbl = is_object($status) ? $status->name : $status;
+                @endphp
+                <option value="{{ $val }}" @selected(old('status', $asset->status ?? '') == $val)>
+                    {{ $lbl }}
                 </option>
             @endforeach
         </select>
