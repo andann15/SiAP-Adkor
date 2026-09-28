@@ -1,47 +1,13 @@
 {
-    "version": 2,
-    "outputDirectory": "public",
-    "regions": ["sin1"],
-    "functions": {
-        "api/index.php": {
-            "runtime": "vercel-php@0.9.0"
-        }
-    },
-    "routes": [
-        {
-            "src": "/build/(.*)",
-            "dest": "/public/build/$1"
-        },
-        {
-            "src": "/images/(.*)",
-            "dest": "/public/images/$1"
-        },
-        {
-            "src": "/favicon.ico",
-            "dest": "/public/favicon.ico"
-        },
-        {
-            "src": "/favicon.svg",
-            "dest": "/public/favicon.svg"
-        },
-        {
-            "src": "/panduan.html",
-            "dest": "/public/panduan.html"
-        },
-        {
-            "src": "/robots.txt",
-            "dest": "/public/robots.txt"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
-        }
-    ],
-    "env": {
-        "APP_ENV": "production",
-        "APP_DEBUG": "false",
-        "CACHE_STORE": "array",
-        "SESSION_DRIVER": "cookie",
-        "QUEUE_CONNECTION": "sync"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "app": {
+      "root": ".",
+      "entrypoint": "Dockerfile.vercel",
+      "runtime": "container"
     }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": { "service": "app" } }
+  ]
 }
