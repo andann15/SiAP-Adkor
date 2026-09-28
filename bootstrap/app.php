@@ -22,30 +22,4 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })->create();
 
-// On Vercel, filesystem is read-only except /tmp
-// Override storage path and bootstrap cache path to use /tmp
-if (isset($_ENV['VERCEL']) || !is_writable(dirname(__DIR__) . '/storage/logs')) {
-    $tmpStorage = '/tmp/storage';
-    $dirs = [
-        $tmpStorage,
-        $tmpStorage . '/app',
-        $tmpStorage . '/app/public',
-        $tmpStorage . '/framework',
-        $tmpStorage . '/framework/cache',
-        $tmpStorage . '/framework/cache/data',
-        $tmpStorage . '/framework/sessions',
-        $tmpStorage . '/framework/testing',
-        $tmpStorage . '/framework/views',
-        $tmpStorage . '/logs',
-        '/tmp/bootstrap/cache',
-    ];
-    foreach ($dirs as $dir) {
-        if (!is_dir($dir)) {
-            mkdir($dir, 0775, true);
-        }
-    }
-    $app->useStoragePath($tmpStorage);
-    $app->useBootstrapPath('/tmp/bootstrap');
-}
-
 return $app;
