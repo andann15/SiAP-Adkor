@@ -1,8 +1,8 @@
 {
     "$schema": "https://www.schemastore.org/package.json",
     "private": true,
-        "scripts": {
-        "build": "vite build",
+    "scripts": {
+        "build": "composer install --no-dev --optimize-autoloader && vite build",
         "dev": "vite"
     },
     "devDependencies": {
