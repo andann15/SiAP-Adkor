@@ -22,6 +22,7 @@ RUN mkdir -p \
         storage/framework/cache \
         storage/framework/sessions \
         storage/framework/views \
+        storage/logs \
         bootstrap/cache \
     && composer dump-autoload --no-dev --classmap-authoritative
 
@@ -33,9 +34,11 @@ COPY --chown=www-data:www-data Caddyfile /etc/frankenphp/Caddyfile
 RUN setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp \
     && chown -R www-data:www-data /config/caddy /data/caddy
 
+EXPOSE 80
+
 ENV PORT=80 \
     APP_ENV=production \
-    APP_DEBUG=false \
+    APP_DEBUG=true \
     LOG_CHANNEL=stderr \
     CACHE_STORE=array \
     SESSION_DRIVER=cookie \
